@@ -1,0 +1,187 @@
+<resources>
+    <string name="app_name">NFC ESL</string>
+
+    <string name="text_device_info">设备信息</string>
+    <string name="text_bind">绑定设备</string>
+    <string name="text_album">相册导入</string>
+    <string name="text_shot">拍摄导入</string>
+    <string name="text_text">文本</string>
+    <string name="text_customer">自定义指令</string>
+    <string name="text_support_color">颜色支持</string>
+    <string name="text_manufacturer">厂商</string>
+    <string name="text_color_type">颜色参数</string>
+    <string name="text_jiaxian">大连佳显</string>
+    <string name="text_yuantai">台湾元太</string>
+    <string name="text_aoyi">广州奥翼</string>
+    <string name="text_weifeng">无锡威锋</string>
+    <string name="text_pdi">PDI</string>
+    <string name="text_dke">DKE</string>
+    <string name="text_jdf">京东方</string>
+    <string name="text_weixinnuo">维信诺</string>
+    <string name="text_other">其它</string>
+
+    <string name="text_screen_scan_level">水平扫描</string>
+    <string name="text_screen_scan_vertical">垂直扫描</string>
+
+    <string name="text_color_20">Black White</string>
+    <string name="text_color_30">Black White Red</string>
+    <string name="text_color_31">Black White Yellow</string>
+
+    <string name="text_color_20_cn">黑白双色</string>
+    <string name="text_color_30_cn">黑白红三色</string>
+    <string name="text_color_31_cn">黑白黄三色</string>
+    <string name="text_color_black">黑</string>
+    <string name="text_color_white">白</string>
+    <string name="text_color_red">红</string>
+    <string name="text_color_yellow">黄</string>
+
+
+    <string name="text_bind_device">请先绑定设备</string>
+    <string name="text_import_preview">导入预览</string>
+    <string name="text_import">导入</string>
+    <string name="text_reduction">还原</string>
+    <string name="text_setting">设置</string>
+
+    <string name="text_success">刷新成功</string>
+    <string name="text_error">错误</string>
+
+    <string name="action_settings">规则1</string>
+    <string name="appbar_scrolling_view_behavior">test   ??</string>
+    <string name="string_verify_id">验证</string>
+    <string name="string_send_apdu_id">发送Apdu</string>
+    <string name="string_get_rnd_id">取随机数</string>
+    <string name="string_load_image">加载图</string>
+    <string name="string_myself_iamge">自定义图</string>
+    <string name="string_write_enik">写屏</string>
+    <string name="string_next_eink">翻屏</string>
+    <string name="string_vert_id">纵向</string>
+    <string name="string_horial_id">横向</string>
+    <string name="string_horial_mirror">横镜</string>
+    <string name="string_get_color_1">取色1</string>
+    <string name="string_get_color_2">取色2</string>
+    <string name="string_get_color_3">取色3</string>
+    <string name="string_rp_id">分辨率</string>
+    <string name="string_type_id">类型</string>
+    <string name="string_pic_height">图片高:</string>
+    <string name="string_pic_width">图片宽:</string>
+    <string name="string_inver_color">反色</string>
+    <string name="string_rolling_over">翻转</string>
+    <string name="string_Horizontal_mirror">水平镜像</string>
+    <string name="string_Vertical_mirror">垂直镜像</string>
+    <string name="string_picture_s">图片</string>
+    <string name="string_text_s">文本</string>
+    <string name="string_picture_bmp">画板</string>
+    <string name="string_input_text1">请输入文字1</string>
+    <string name="string_input_text2">请输入文字2</string>
+    <string name="string_input_text3">请输入文字3</string>
+    <string name="string_input_text4">请输入文字4</string>
+    <string name="string_text_color">文字颜色:</string>
+    <string name="string_text_size">文字大小:</string>
+    <string name="string_text_write_bmp">并写入BMP刷新成功</string>
+    <string name="string_text_write_bmp_11">刷屏中.....</string>
+    <string name="string_not_support_nfc">设备不支持NFC或NFC未开启</string>
+    <string name="string_not_support_nfc1">NFC is not available,设备不支持NFC!</string>
+    <string name="string_not_support_nfc2">请在设置中先启用NFC功能</string>
+    <string name="string_not_support_nfc3">请刷到LED屏再试</string>
+    <string name="string_not_support_nfc4">无响应,请检查卡片位置是否放置正确</string>
+    <string name="string_not_support_nfc5">请打开图片文件</string>
+    <string name="string_not_support_nfc6">请先验证PIN</string>
+    <string name="string_not_support_nfc7">ReadBmpFile error2</string>
+    <string name="string_not_support_nfc8">bmp数据格式不正确 必须为24</string>
+    <string name="string_not_support_nfc9"> 图片必须为单色，分辨率为296*128的BMP图片</string>
+    <string name="string_not_support_nfc91"> 图片必须为单色，分辨率为400*300的BMP图片</string>
+    <string name="string_not_support_nfc10"> 图片必须三色(黑色，红色，白色)，分辨率为296*128的24位BMP图片</string>
+    <string name="string_not_support_nfc81">bmp数据格式不正确 必须为单色</string>
+    <string name="string_res_1">您选择的图片分辨率是%d*%d, 硬件屏幕实际分辨率是%d*%d,请重新选择图片</string>
+    <string name="string_res_2">请输入PIN</string>
+    <string name="string_res_3">取消</string>
+    <string name="string_res_4">确定</string>
+    <string name="string_res_5">PIN验证出错</string>
+    <string name="string_res_6">PIN验证成功</string>
+    <string name="string_res_7">PIN数据长度不对</string>
+    <string name="string_res_8">PIN验证出错，错误码:</string>
+    <string name="string_res_9">PIN验证，指令无响应</string>
+    <string name="string_res_10">请选择图片区索引号</string>
+    <string name="string_res_11">写第%d列数据发送错误</string>
+    <string name="string_res_12">写图片数据过程发生指令无响应错误</string>
+    <string name="string_res_13">请刷到LED屏再试</string>
+    <string name="string_res_14">获取ESL屏幕配置信息不合法</string>
+    <string name="string_res_15">获取ESL屏幕配置信息指令无响应错误</string>
+    <string name="string_res_16">刷屏时发生错误，错误码:</string>
+    <string name="string_res_17">刷屏时发生错误，指令无响应</string>
+    <string name="string_res_18">获取刷屏结果发生错误，错误码:</string>
+    <string name="string_res_19">bmp数据格式不正确 必须为24</string>
+    <string name="string_res_20">图片必须为三色 BMP图片</string>
+    <string name="string_res_21">图片必须为单色图片</string>
+    <string name="string_res_22"> 您选择的图片不符合要求，建议您使用 【自定义图】编辑、裁剪、转换图片</string>
+    <string name="string_res_23"> 您选择的图片分辨率是%d*%d, 硬件屏幕实际分辨率是%d*%d,请重新选择图片</string>
+    <string name="string_res_24"> 图片必须为三色，264*176的BMP图片</string>
+    <string name="string_res_25"> bmp数据格式不正确，bmp8</string>
+    <string name="string_res_26"> 图片必须为单色，分辨率为264*176的BMP图片</string>
+    <string name="string_res_27"> bmp数据格式不正确 必须为24</string>
+    <string name="string_res_28"> 图片必须为三色，250*122的BMP图片</string>
+    <string name="string_res_29"> 写入BMP并刷新成功</string>
+    <string name="string_res_30"> bmp数据格式不正确</string>
+    <string name="string_res_31"> 图片必须为单色，分辨率为250*122的BMP图片</string>
+    <string name="string_res_32"> bmp数据格式不正确 必须为24</string>
+    <string name="string_res_33"> 图片必须为三色，分辨率为212*104的BMP图片</string>
+    <string name="string_res_34"> 图片必须为单色，分辨率为212*104的BMP图片</string>
+    <string name="string_res_35">  图片必须为单色，分辨率为152*152的BMP图片</string>
+    <string name="string_res_36"> 能量不足，请换位置重新尝试</string>
+    <string name="string_res_37"> 屏幕接入异常，请排查后重新尝试</string>
+    <string name="string_res_38">裁剪图片</string>
+    <string name="string_res_39">画板</string>
+    <string name="string_res_40">根据文字生成图片</string>
+    <string name="string_res_41">图片编辑助手</string>
+    <string name="string_res_42">下划线 </string>
+    <string name="string_res_43">斜体 </string>
+    <string name="string_res_44">粗体 </string>
+    <string name="string_res_45">保存 </string>
+    <string name="string_res_46">退出 </string>
+    <string name="string_res_47">黑白 </string>
+    <string name="string_res_48">二值化 </string>
+    <string name="string_res_49">灰度 </string>
+    <string name="string_res_50">垂直镜像 </string>
+    <string name="string_res_51">水平镜像 </string>
+    <string name="string_res_52">翻转 </string>
+    <string name="string_res_53">反色 </string>
+    <string name="string_res_54">黑笔</string>
+    <string name="string_res_55">红笔</string>
+    <string name="string_res_56">读取Url失败 </string>
+    <string name="string_res_57">Url数据区格式不正确 </string>
+    <string name="string_res_58">打开Url</string>
+    <string name="string_res_59">Url不合法.url必须是https://或http://开头，比如 https://www.baidu.com</string>
+    <string name="string_res_60">写Url</string>
+    <string name="string_res_61">写Url失败</string>
+    <string name="string_res_62">写入Url成功</string>
+    <string name="string_res_63">更新PIN码</string>
+    <string name="string_res_64">PIN 更新成功</string>
+    <string name="string_res_65">PIN 格式不正确</string>
+    <string name="pin_update">PIN码更新</string>
+
+    <string name="pin_1">原PIN码</string>
+    <string name="pin_2">新PIN码</string>
+    <string name="pin_3">确认PIN码</string>
+    <string name="pin_4">请输入原PIN码</string>
+    <string name="pin_5">请输入新PIN码</string>
+    <string name="pin_6">请输入确认PIN码</string>
+    <string name="pin_7">两次PIN码输入不一致</string>
+    <string name="pin_8">请输入PIN码</string>
+    <string name="update">更新</string>
+
+
+
+
+    <string name="empty_data">指令不能为空</string>
+    <string name="empty_incorrect">指令格式不正确</string>
+    <string name="bmp_error">图片信息和屏幕信息不匹配</string>
+    <string name="pen_width">笔尖宽:</string>
+
+    <string name="hint_error">请移动设备以找到合适的NFC接触区域</string>
+    <string name="import_background_image">导入背景模板图片</string>
+
+    <string name="color_scale_1">色阶算法</string>
+    <string name="color_scale_2">抖动算法</string>
+
+
+</resources>

@@ -1,0 +1,20 @@
+<resources>
+<!--    <string name="app_name">SmartLock</string>-->
+    <string name="text_loading">加载中...</string>
+
+
+    <string name="text_nfc">靠近NFC标签</string>
+    <string name="text_cancel">取消</string>
+    <string name="text_explain">说明</string>
+    <string name="text_app_update_message">发现新版本,是否立即更新?</string>
+    <string name="text_app_update">更新</string>
+    <string name="text_app_no_update">暂不更新</string>
+    <string name="text_app_updating">下载中..</string>
+    <string name="text_download_finish">下载完成</string>
+    <string name="text_cancel_download">取消下载</string>
+    <string name="text_install">安装</string>
+
+    <string name="tips">提示</string>
+    <string name="open_nfc">本应用需要打开NFC功能才能使用,请点击设置去开启NFC功能</string>
+    <string name="setting">设置</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fmsh.einkesl">
+
+    <uses-permission android:name="android.permission.READ_MEDIA_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许从sd卡中读取文件 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:name=".App"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/BaseAppTheme">
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.CropImageActivity"/>
+        <activity android:name=".activity.RefreshScreenActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity android:name=".activity.CustomImageActivity"/>
+        <activity android:name=".activity.TextGenerateBmpActivity"/>
+        <activity android:name=".activity.CommandActivity"/>
+        <activity android:name=".activity.PinActivity"/>
+    </application>
+
+</manifest>

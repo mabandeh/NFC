@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/gray_1"
+    android:paddingBottom="20dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:id="@+id/imageView"
+        android:layout_margin="10dp"
+        />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/rg"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:text="@string/color_scale_1"
+            android:paddingRight="20dp"
+            android:id="@+id/rb1"
+            android:checked="true"
+            android:layout_height="wrap_content"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:id="@+id/rb2"
+            android:text="@string/color_scale_2"
+            android:layout_height="wrap_content"/>
+    </RadioGroup>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:id="@+id/seekBar"
+        android:max="255"
+        android:min="1"
+        android:layout_margin="20dp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="15dp"
+        android:id="@+id/et_pin"
+        android:background="@drawable/shap_bk_1"
+        android:paddingRight="5dp"
+        android:maxLines="1"
+        android:maxLength="12"
+        android:inputType="textPassword"
+        android:hint="@string/pin_8"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/qmui_config_color_white"
+        android:textSize="20dp"
+        android:text="@string/text_import"
+        android:background="@drawable/shape_btn"
+        android:id="@+id/btn_confirm"
+        />
+
+</LinearLayout>

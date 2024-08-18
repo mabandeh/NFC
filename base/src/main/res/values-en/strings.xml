@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="text_loading">Loading</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_nfc">Approach an NFC Tag</string>
+    <string name="text_explain">Explain</string>
+    <string name="text_app_update_message">New version found, update now?</string>
+    <string name="text_app_update">Update</string>
+    <string name="text_app_no_update">Do not update</string>
+    <string name="text_app_updating">Downloading</string>
+    <string name="text_download_finish">Download complete</string>
+    <string name="text_cancel_download">Cancel Download</string>
+    <string name="text_install">Install</string>
+
+    <string name="tips">Tips</string>
+    <string name="open_nfc">This application can only be used when the NFC is turned on. Please click settings to turn on the NFC </string>
+    <string name="setting">Setting</string>
+</resources>

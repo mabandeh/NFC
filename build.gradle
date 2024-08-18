@@ -1,0 +1,46 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jcenter.bintray.com' }
+        jcenter()
+        mavenLocal()
+        maven { url 'https://maven.google.com' }
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+        jcenter {
+            url 'https://jcenter.bintray.com'
+        }
+
+       // maven { url 'https://mvnrepository.com/artifact' }  // Note: Adjust URL if necessary
+    }
+    dependencies {
+        // Update to a more recent version of the Android Gradle Plugin if possible
+        classpath "com.android.tools.build:gradle:7.2.1" // Example version, adjust as needed
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven { url 'https://maven.google.com' }
+        // jcenter() removed as it is deprecated
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://jcenter.bintray.com' }
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+        jcenter {
+            url 'https://jcenter.bintray.com'
+        }
+        //maven { url 'https://mvnrepository.com/artifact' }  // Note: Adjust URL if necessary
+    }
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

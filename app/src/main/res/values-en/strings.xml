@@ -1,0 +1,188 @@
+<resources>
+    <string name="app_name">NFC ESL</string>
+
+
+    <string name="text_device_info">Device information</string>
+    <string name="text_bind">Binding device</string>
+    <string name="text_album">Album import</string>
+    <string name="text_shot">Shoot in</string>
+    <string name="text_text">Text</string>
+    <string name="text_customer">Custom instruction</string>
+    <string name="text_support_color">Color</string>
+    <string name="text_manufacturer">Manufacturer</string>
+    <string name="text_color_type">Color parameters</string>
+
+    <string name="text_jiaxian">大连佳显</string>
+    <string name="text_yuantai">台湾元太</string>
+    <string name="text_aoyi">OED</string>
+    <string name="text_weifeng">无锡威锋</string>
+    <string name="text_pdi">PDI</string>
+    <string name="text_dke">DKE</string>
+    <string name="text_jdf">BOE</string>
+    <string name="text_weixinnuo">维信诺</string>
+    <string name="text_other">Other</string>
+
+    <string name="text_screen_scan_level">Horizontal scan</string>
+    <string name="text_screen_scan_vertical">Vertical scan</string>
+
+
+    <string name="text_color_20">Black White</string>
+    <string name="text_color_30">Black White Red</string>
+    <string name="text_color_31">Black White Yellow</string>
+
+    <string name="text_color_20_cn">黑白双色</string>
+    <string name="text_color_30_cn">黑白红三色</string>
+    <string name="text_color_31_cn">黑白黄三色</string>
+
+    <string name="text_color_black">Black</string>
+    <string name="text_color_white">White</string>
+    <string name="text_color_red">Red</string>
+    <string name="text_color_yellow">Yellow</string>
+
+    <string name="text_bind_device">Please bind the device</string>
+    <string name="text_import_preview">Import Preview</string>
+
+    <string name="text_import">Import</string>
+    <string name="text_reduction">Reduction</string>
+    <string name="text_setting">Setting</string>
+
+    <string name="text_success">Refresh succeeded</string>
+    <string name="text_error">Error</string>
+
+    <string name="action_settings">Rule 1</string>
+    <string name="appbar_scrolling_view_behavior">test   ??</string>
+    <string name="string_verify_id">Verify Pin</string>
+    <string name="string_send_apdu_id">Send</string>
+    <string name="string_get_rnd_id">Get Rand</string>
+    <string name="string_load_image">Load Image</string>
+    <string name="string_myself_iamge">Custom Image</string>
+    <string name="string_write_enik">Write screen</string>
+    <string name="string_next_eink">Switch screen </string>
+    <string name="string_vert_id">Vertical</string>
+    <string name="string_horial_id">Horizontal</string>
+    <string name="string_horial_mirror">Horizontal mirror</string>
+    <string name="string_get_color_1">Get Color 1</string>
+    <string name="string_get_color_2">Get Color 2</string>
+    <string name="string_get_color_3">Get Color3</string>
+    <string name="string_rp_id">Resolution</string>
+    <string name="string_type_id">Type:</string>
+    <string name="string_pic_height">High:</string>
+    <string name="string_pic_width">Width:</string>
+    <string name="string_inver_color">Inverse</string>
+    <string name="string_rolling_over">Flip</string>
+    <string name="string_Horizontal_mirror">Horizontal mirror</string>
+    <string name="string_Vertical_mirror">Vertical mirror</string>
+    <string name="string_picture_s">Picture</string>
+    <string name="string_text_s">Text</string>
+    <string name="string_picture_bmp">Drawing board</string>
+    <string name="string_input_text1">Please enter text 1</string>
+    <string name="string_input_text2">Please enter text 2</string>
+    <string name="string_input_text3">Please enter text 3</string>
+    <string name="string_input_text4">Please enter text 4</string>
+    <string name="string_text_color">Text Color:</string>
+    <string name="string_text_size">Text size:</string>
+    <string name="string_text_write_bmp">Write bmp and refresh successfully </string>
+    <string name="string_text_write_bmp_11">Writing Eink.....</string>
+    <string name="string_not_support_nfc"> NFC is not supported or NFC is not open</string>
+    <string name="string_not_support_nfc1">NFC is not available,NFC is not available</string>
+    <string name="string_not_support_nfc2"> Enable NFC function first in settings</string>
+    <string name="string_not_support_nfc3"> Brush the LED screen and try again</string>
+    <string name="string_not_support_nfc4"> No response, please check that the card is placed correctly</string>
+    <string name="string_not_support_nfc5"> Please open the picture file</string>
+    <string name="string_not_support_nfc6"> Check PIN first</string>
+    <string name="string_not_support_nfc7">ReadBmpFile error2</string>
+    <string name="string_not_support_nfc8"> bmp incorrect data format must be 24</string>
+    <string name="string_not_support_nfc81"> bmp incorrect data format must be monochrome</string>
+    <string name="string_not_support_nfc9">  BMP images must be monochrome with a resolution of 296*128</string>
+    <string name="string_not_support_nfc91">  BMP images must be monochrome with a resolution of 400*300</string>
+    <string name="string_not_support_nfc10">  Images must be tricolor (black, red, white) with a resolution of 296*128 BMP 24 bits</string>
+    <string name="string_res_1">The resolution of the picture you choose is %d*%d, the actual resolution of the hardware screen is %d*%d, please re-select the picture</string>
+    <string name="string_res_2">Please input pin</string>
+    <string name="string_res_3">Cancel</string>
+    <string name="string_res_4">Ok</string>
+    <string name="string_res_5"> PIN validation error</string>
+    <string name="string_res_6"> PIN validation</string>
+    <string name="string_res_7">The length of pin is wrong.</string>
+    <string name="string_res_8"> PIN validation error,the error code is</string>
+    <string name="string_res_9"> PIN validation, instruction no response</string>
+    <string name="string_res_10"> Please select the index number</string>
+    <string name="string_res_11">Error in writing %d column data sending</string>
+    <string name="string_res_12"> No response error in instruction during picture data writing</string>
+    <string name="string_res_13"> Brush the LED screen and try again</string>
+    <string name="string_res_14">Access to ESL screen configuration information is illegal</string>
+    <string name="string_res_15">Gets ESL Screen Configuration Information Instruction No Response Error</string>
+    <string name="string_res_16"> Error in screen brushing,error code is:</string>
+    <string name="string_res_17"> Error during screen brushing, instruction no response</string>
+    <string name="string_res_18"> An error occurred to get the result of the screen brush:</string>
+    <string name="string_res_19"> bmp incorrect data format must be 24</string>
+    <string name="string_res_20"> A picture must be BMP three colors</string>
+    <string name="string_res_21"> Pictures must be monochrome</string>
+    <string name="string_res_22"> You choose a picture that does not meet the requirements. You are advised to edit, cut, and convert the picture using Custom Graphs.</string>
+    <string name="string_res_23"> The resolution of the picture you choose is% d*%d, the actual resolution of the hardware screen is% d*%d, please re-select the picture</string>
+    <string name="string_res_24">  BMP picture must be tricolor ,264*176</string>
+    <string name="string_res_25">  bmp data format is incorrect, must be 8-bit</string>
+    <string name="string_res_26">  Image must be monochrome, resolution 264*176 BMP image</string>
+    <string name="string_res_27">  bmp incorrect data format must be 24</string>
+    <string name="string_res_28">  BMP picture must be tricolor ,250*122</string>
+    <string name="string_res_29"> Write BMP and refresh successfully</string>
+    <string name="string_res_30"> BMP data format incorrect</string>
+    <string name="string_res_31">  BMP images must be monochrome with a resolution of 250*122</string>
+    <string name="string_res_32">  Image data format must be 24-bit </string>
+    <string name="string_res_33">  BMP images must be tricolor and resolution 212*104</string>
+    <string name="string_res_34"> BMP images must be monochrome with a resolution of 212*104</string>
+    <string name="string_res_35"> Image must be monochrome, resolution 152*152 BMP picture</string>
+    <string name="string_res_36"> Lack of energy, please change position and try again </string>
+    <string name="string_res_37"> Screen access exception, please check and try again </string>
+    <string name="string_res_38">Cutting pictures </string>
+    <string name="string_res_39">Palette</string>
+    <string name="string_res_40">Create pictures by text</string>
+    <string name="string_res_41">Photo Editor Assistant </string>
+    <string name="string_res_42">Underline </string>
+    <string name="string_res_43">Italic </string>
+    <string name="string_res_44">Bold </string>
+    <string name="string_res_45">Save </string>
+    <string name="string_res_46">Exit </string>
+    <string name="string_res_47">Black white </string>
+    <string name="string_res_48">Binaryzation </string>
+    <string name="string_res_49">Gray </string>
+    <string name="string_res_50">Vertical mirror </string>
+    <string name="string_res_51">Horiz mirror </string>
+    <string name="string_res_52">Flip </string>
+    <string name="string_res_53">Inverse </string>
+    <string name="string_res_54">black pen</string>
+    <string name="string_res_55">red pen</string>
+    <string name="string_res_56">Failed to read the url </string>
+    <string name="string_res_57">The url data is invalid. </string>
+    <string name="string_res_58">Open Url</string>
+    <string name="string_res_59">Url is invalid.url must be the beginning of a https��// or http��//, such as https://www.baidu.com</string>
+    <string name="string_res_60">Write Url</string>
+    <string name="string_res_61">Failed to write the url</string>
+    <string name="string_res_62">Successed in writting the url</string>
+    <string name="string_res_63">Update pin</string>
+    <string name="string_res_64">PIN modification successful</string>
+    <string name="string_res_65">PIN format is incorrect</string>
+
+    <string name="pin_update">PIN update</string>
+    <string name="pin_1">Original PIN</string>
+    <string name="pin_2">New PIN </string>
+    <string name="pin_3">Confirm PIN</string>
+    <string name="pin_4">Please enter the original pin </string>
+    <string name="pin_5">Please enter a new pin</string>
+    <string name="pin_6">Please enter your confirmation pin</string>
+    <string name="pin_7">The two pin code entries are inconsistent</string>
+    <string name="pin_8">Please enter your PIN</string>
+    <string name="update">Update</string>
+
+    <string name="empty_data">Data is empty</string>
+    <string name="empty_incorrect">Data is incorrect</string>
+    <string name="bmp_error">The picture information does not match the screen information</string>
+    <string name="pen_width">Width:</string>
+    <string name="hint_error">Please move the device to find a proper NFC touch area.</string>
+
+    <string name="import_background_image">Import background template image</string>
+
+    <string name="color_scale_1">Color scale</string>
+    <string name="color_scale_2">Dithering algorithm</string>
+
+
+</resources>

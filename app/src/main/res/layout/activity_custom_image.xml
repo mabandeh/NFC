@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/toobar"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.fmsh.einkesl.tools.custom.MyDrawView
+            android:layout_width="match_parent"
+            android:id="@+id/drawView"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/setting"
+            android:id="@+id/floatAB"
+            android:background="@drawable/floatbutton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:layout_margin="10dp"
+            app:rippleColor="#ffe5e5e5"
+            app:backgroundTint="#ffffffff"
+            app:elevation="6dp"
+            app:pressedTranslationZ="6dp"
+            app:fabSize="normal"
+            app:borderWidth="0dp"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>
