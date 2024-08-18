@@ -23,12 +23,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }
+//    lintOptions {
+//        checkReleaseBuilds false
+//        // Or, if you prefer, you can continue to check for errors in release builds,
+//        // but continue the build even when errors are found:
+//        abortOnError false
+//    }
 }
 
 dependencies {
@@ -49,7 +49,5 @@ dependencies {
     //implementation  'com.qmuiteam:qmuilint:2.0.1'
 
 
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
 }

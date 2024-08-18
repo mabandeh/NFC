@@ -58,14 +58,11 @@ import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import butterknife.BindView;
 
 public class MainActivity extends BaseNFCActivity {
 
     public ReceiveHandler receiveHandler;
-    @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     private QMUIGroupListView mGroupListView;
     private MainAdapter mMainAdapter;
@@ -87,6 +84,8 @@ public class MainActivity extends BaseNFCActivity {
 
     @Override
     protected void initView() {
+         topbar = findViewById(R.id.topbar);
+        recyclerView = findViewById(R.id.recyclerView);
         receiveHandler = new ReceiveHandler(this);
         setTitle(UIUtils.getString(mContext, R.string.app_name) + "  " + getCurrentVersionName());
         if (!MyThread.getInstance().isAlive()) {

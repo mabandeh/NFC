@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,9 +19,6 @@ import com.fmsh.einkesl.tools.MyThread;
 import com.fmsh.einkesl.utils.Constants;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
@@ -29,15 +27,10 @@ import butterknife.OnClick;
  */
 public class PinActivity extends BaseNFCActivity {
 
-    @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.et_old_pin)
     EditText etOldPin;
-    @BindView(R.id.et_pin)
     EditText etPin;
-    @BindView(R.id.et_confirm_pin)
     EditText etConfirmPin;
-    @BindView(R.id.btn_update)
     Button btnUpdate;
     private String mOldPin;
     private String mPin;
@@ -49,6 +42,17 @@ public class PinActivity extends BaseNFCActivity {
 
     @Override
     protected void initView() {
+        topbar = findViewById(R.id.topbar);
+        etOldPin = findViewById(R.id.et_old_pin);
+        etPin = findViewById(R.id.et_pin);
+        etConfirmPin = findViewById(R.id.et_confirm_pin);
+        btnUpdate = findViewById(R.id.btn_update);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClick2();
+            }
+        });
         setTitle(UIUtils.getString(R.string.string_res_63));
         setBackImage();
 
@@ -107,8 +111,8 @@ public class PinActivity extends BaseNFCActivity {
     }
 
 
-    @OnClick(R.id.btn_update)
-    public void onClick() {
+
+    public void onClick2() {
         if(checkPinCode()){
             showNfcDialog();
         }

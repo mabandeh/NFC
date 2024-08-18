@@ -38,39 +38,25 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
+
 
 /**
  * @author wuyajiang
  * @date 2021/5/28
  */
 public class TextGenerateBmpActivity extends BaseActivity {
-    @BindView(R.id.et_text1)
     EditText etText1;
-    @BindView(R.id.imgpic)
     ImageView imgpic;
-    @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.et_text2)
     EditText etText2;
-    @BindView(R.id.et_text3)
     EditText etText3;
-    @BindView(R.id.et_text4)
     EditText etText4;
-    @BindView(R.id.spinnerTexFontName)
     Spinner spinnerTexFontName;
-    @BindView(R.id.checkboxBold)
     CheckBox checkboxBold;
-    @BindView(R.id.checkboxItalics)
     CheckBox checkboxItalics;
-    @BindView(R.id.checkboxUnderLine)
     CheckBox checkboxUnderLine;
-    @BindView(R.id.spinnerTextColor)
     Spinner spinnerTextColor;
-    @BindView(R.id.spinnerTextSize)
     Spinner spinnerTextSize;
-    @BindView(R.id.btn_import)
     Button btnImport;
     private int mWidth = App.getDeviceInfo().getWidth();
     private int mHeight = App.getDeviceInfo().getHeight();
@@ -107,6 +93,26 @@ public class TextGenerateBmpActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+         etText1 = findViewById(R.id.et_text1);
+        imgpic = findViewById(R.id.imgpic);
+        topbar = findViewById(R.id.topbar);
+        etText2 = findViewById(R.id.et_text2);
+        etText3 = findViewById(R.id.et_text3);
+        etText4 = findViewById(R.id.et_text4);
+        spinnerTexFontName = findViewById(R.id.spinnerTexFontName);
+        checkboxBold = findViewById(R.id.checkboxBold);
+        checkboxItalics = findViewById(R.id.checkboxItalics);
+        checkboxUnderLine = findViewById(R.id.checkboxUnderLine);
+        spinnerTextColor = findViewById(R.id.spinnerTextColor);
+        spinnerTextSize = findViewById(R.id.spinnerTextSize);
+        btnImport = findViewById(R.id.btn_import);
+        btnImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClick2();
+            }
+        });
+
         setTitle(UIUtils.getString(mContext, R.string.string_res_40));
         setBackImage();
         mTopBar.addRightImageButton(R.mipmap.save, 0x11).setOnClickListener(new View.OnClickListener() {
@@ -427,8 +433,7 @@ public class TextGenerateBmpActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.btn_import)
-    public void onClick() {
+    public void onClick2() {
         IUtils.selectPicture(TextGenerateBmpActivity.this);
     }
 

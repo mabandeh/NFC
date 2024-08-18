@@ -20,7 +20,6 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
-import butterknife.ButterKnife;
 
 
 /**
@@ -38,7 +37,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        ButterKnife.bind(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         QMUIStatusBarHelper.translucent(this, UIUtils.getColor(this,R.color.colorPrimary));
         mTopBar = findViewById(R.id.topbar);

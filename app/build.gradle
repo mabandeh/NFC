@@ -36,8 +36,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(path: ':base')
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+//    implementation 'com.jakewharton:butterknife:10.1.0'
+//    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0'

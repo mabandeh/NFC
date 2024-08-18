@@ -15,14 +15,12 @@ import com.fmsh.einkesl.tools.image.BmpUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import butterknife.BindView;
 
 /**
  * @author wuyajiang
  * @date 2021/4/22
  */
 public class CropImageActivity extends BaseActivity {
-    @BindView(R.id.crop_image)
     CropImageView cropImage;
     private String mBmpPath;
 
@@ -33,6 +31,7 @@ public class CropImageActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+         cropImage = findViewById(R.id.crop_image);
         setTitle(UIUtils.getString(mContext, R.string.string_res_38));
         setBackImage();
         mBmpPath = getIntent().getStringExtra("bmpPath");

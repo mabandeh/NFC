@@ -19,7 +19,6 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogBuilder;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogView;
 
-import butterknife.ButterKnife;
 
 /**
  * @author wuyajiang
@@ -55,7 +54,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
         initView(view);
         initData();
 

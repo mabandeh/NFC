@@ -12,8 +12,6 @@ import com.fmsh.base.utils.UIUtils;
 import com.fmsh.einkesl.R;
 import com.fmsh.einkesl.tools.crop.util.UIUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author wuyajiang
@@ -54,14 +52,13 @@ public class RefreshScreenAdapter extends BaseRecyclerAdapter {
 
     static
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.image)
         ImageView image;
-        @BindView(R.id.tvContent)
         TextView tvContent;
 
         ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+             image = view.findViewById(R.id.image);
+             tvContent= view.findViewById(R.id.tvContent);
         }
     }
 }

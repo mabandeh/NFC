@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,19 +23,14 @@ import com.fmsh.einkesl.tools.MyThread;
 
 import java.lang.ref.WeakReference;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * @author wuyajiang
  * @date 2021/5/31
  */
 public class CommandActivity extends BaseNFCActivity {
-    @BindView(R.id.et_apdu)
     EditText etApdu;
-    @BindView(R.id.btn_confirm)
     Button btnConfirm;
-    @BindView(R.id.tvContent)
     TextView tvContent;
     private ReceiveHandler mReceiveHandler;
     private String mApdu;
@@ -46,6 +42,15 @@ public class CommandActivity extends BaseNFCActivity {
 
     @Override
     protected void initView() {
+         etApdu = findViewById(R.id.et_apdu);
+         btnConfirm= findViewById (R.id.btn_confirm);
+         btnConfirm.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 onClick2();
+             }
+         });
+         tvContent= findViewById (R.id.tvContent);
         mReceiveHandler = new ReceiveHandler(this);
         setTitle(UIUtils.getString(R.string.text_customer));
         setBackImage();
@@ -70,8 +75,7 @@ public class CommandActivity extends BaseNFCActivity {
 
     }
 
-    @OnClick(R.id.btn_confirm)
-    public void onClick() {
+    public void onClick2() {
         mApdu = etApdu.getText().toString();
         if (mApdu.isEmpty()) {
             HintDialog.messageDialog(UIUtils.getString(R.string.empty_data));

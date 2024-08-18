@@ -11,8 +11,7 @@ import com.fmsh.base.adapter.BaseRecyclerAdapter;
 import com.fmsh.base.utils.UIUtils;
 import com.fmsh.einkesl.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 
 /**
  * @author wuyajiang
@@ -51,14 +50,13 @@ public class MainAdapter extends BaseRecyclerAdapter {
 
     static
     class ViewHolder extends  RecyclerView.ViewHolder{
-        @BindView(R.id.image)
         ImageView image;
-        @BindView(R.id.tvContent)
         TextView tvContent;
 
         ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+             image = view.findViewById(R.id.image);
+            tvContent = view.findViewById(R.id.tvContent);
         }
     }
 }

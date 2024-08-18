@@ -21,18 +21,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
-import butterknife.BindView;
 
 /**
  * @author wuyajiang
  * @date 2021/4/23
  */
 public class CustomImageActivity extends BaseActivity {
-    @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.drawView)
     MyDrawView drawView;
-    @BindView(R.id.floatAB)
     FloatingActionButton floatAB;
 
     @Override
@@ -42,6 +38,9 @@ public class CustomImageActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+         topbar  = findViewById(R.id.topbar);
+         drawView= findViewById(R.id.drawView);
+         floatAB= findViewById(R.id.floatAB);
         setTitle(UIUtils.getString(mContext, R.string.string_res_39));
         setBackImage();
         drawView.m_SaveBmpwidth = App.getDeviceInfo().getWidth();

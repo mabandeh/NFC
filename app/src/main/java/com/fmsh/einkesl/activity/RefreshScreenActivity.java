@@ -46,18 +46,15 @@ import com.yalantis.ucrop.UCrop;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import butterknife.BindView;
+
 
 /**
  * @author wuyajiang
  * @date 2021/4/22
  */
 public class RefreshScreenActivity extends BaseNFCActivity {
-    @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.image)
     ImageView image;
     private ImageView mImageView;
     private ReceiveHandler mReceiveHandler;
@@ -77,6 +74,10 @@ public class RefreshScreenActivity extends BaseNFCActivity {
 
     @Override
     protected void initView() {
+
+         topbar =   findViewById(R.id.topbar);
+        recyclerView =   findViewById(R.id.recyclerView);
+        image =   findViewById(R.id.image);
         setTitle(UIUtils.getString(mContext, R.string.text_import_preview));
         setBackImage();
         mReceiveHandler = new ReceiveHandler(this);
