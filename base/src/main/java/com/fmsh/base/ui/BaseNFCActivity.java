@@ -41,7 +41,7 @@ public abstract class BaseNFCActivity extends BaseActivity {
         }
 //        startReaderMode();
         if (mNfcAdapter != null) {
-            mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
         }
 
     }
@@ -91,11 +91,12 @@ public abstract class BaseNFCActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         if (mNfcAdapter != null) {
             mNfcAdapter.disableForegroundDispatch(this);
 //            mNfcAdapter.disableReaderMode(this);
         }
+        super.onPause();
+
     }
 
     @Override

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
 
+    compileSdk 35
     defaultConfig {
         applicationId "com.fmsh.einkesl"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 35
         versionCode 10
         versionName "2.0"
 
@@ -25,6 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.fmsh.einkesl'
 }
 
 dependencies {

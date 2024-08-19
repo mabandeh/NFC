@@ -10,15 +10,15 @@ buildscript {
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
-        jcenter {
-            url 'https://jcenter.bintray.com'
-        }
+//        jcenter {
+//            url 'https://jcenter.bintray.com'
+//        }
 
        // maven { url 'https://mvnrepository.com/artifact' }  // Note: Adjust URL if necessary
     }
     dependencies {
         // Update to a more recent version of the Android Gradle Plugin if possible
-        classpath "com.android.tools.build:gradle:7.2.1" // Example version, adjust as needed
+        classpath 'com.android.tools.build:gradle:8.5.2' // Example version, adjust as needed
     }
 }
 
@@ -35,9 +35,9 @@ allprojects {
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
-        jcenter {
-            url 'https://jcenter.bintray.com'
-        }
+//        jcenter {
+//            url 'https://jcenter.bintray.com'
+//        }
         //maven { url 'https://mvnrepository.com/artifact' }  // Note: Adjust URL if necessary
     }
 }
