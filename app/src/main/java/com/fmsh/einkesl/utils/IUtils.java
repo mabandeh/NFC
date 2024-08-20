@@ -47,10 +47,9 @@ public class IUtils {
      * @return
      */
     public static DeviceInfo loadDeviceInfo(Context mContext, String info) {
+        boolean color_ex = false;
         DeviceInfo deviceInfo = new DeviceInfo();
         try {
-
-
             byte[] toByte = FMUtil.hexToByte(info);
             int tagLength = 0;
             if (toByte[0] == Constants.TLV_SCREEN_INFO) {
@@ -104,6 +103,8 @@ public class IUtils {
                         en_color = UIUtils.getString(mContext, R.string.text_color_31);
                         break;
                     default:
+                        color = String.format("%d 色", toByte[4]>>4);
+                        en_color = String.format("%d Color", toByte[4]>>4);
                         break;
                 }
 //                deviceInfo.setColor(String.format("%s(%02x)", color, toByte[4]));
@@ -133,42 +134,51 @@ public class IUtils {
                 deviceInfo.setRefreshScan(toByte[tagLength+2]);
                 deviceInfo.setScanType(String.format("(%s)", screenScan));
                 // 23 00 30 48 FFFF
-                int size = (toByte[tagLength+3] >> 4) & 0xff;
-                deviceInfo.setSize(size);
-                int colorCount = toByte[tagLength+3] & 0x0F;
-//                int colorCount = 3;
-                deviceInfo.setColorCount(colorCount);
-                StringBuilder colorType = new StringBuilder();
-                for (int i = 0; i < colorCount; i++) {
-                    String type = "";
-                    byte value = (byte) ((toByte[tagLength+4 + i] >> 5) & 0xff);
-                    switch (value) {
-                        case 0x00:
-                            int blackColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
-                            deviceInfo.setBlack(blackColorValue > 1 ? 1 : 0);
-                            type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_black), blackColorValue);
-                            break;
-                        case 0x01:
-                            int whiteColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
-                            deviceInfo.setWhite(whiteColorValue > 1 ? 1 : 0);
-                            type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_white), whiteColorValue);
-                            break;
-                        case 0x02:
-                            int redColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
-                            deviceInfo.setRed(redColorValue > 1 ? 1 : 0);
-                            type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_red), redColorValue);
-                            break;
-                        case 0x03:
-                            int yellowColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
-                            deviceInfo.setYellow(yellowColorValue > 1 ? 1 : 0);
-                            type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_yellow), yellowColorValue);
-                            break;
-                        default:
-                            break;
-                    }
-                    colorType.append(type);
+                if(0xE0 == toByte[tagLength+3])
+                {//扩展参数
+                    color_ex = true;
                 }
-                deviceInfo.setColorType(colorType.toString());
+                else
+                {
+                    int size = (toByte[tagLength+3] >> 4) & 0xff;
+                    deviceInfo.setSize(size);
+                    int colorCount = toByte[tagLength+3] & 0x0F;
+//                int colorCount = 3;
+                    deviceInfo.setColorCount(colorCount);
+                    StringBuilder colorType = new StringBuilder();
+                    for (int i = 0; i < colorCount; i++) {
+                        String type = "";
+                        byte value = (byte) ((toByte[tagLength+4 + i] >> 5) & 0xff);
+                        switch (value) {
+                            case 0x00:
+                                int blackColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
+                                deviceInfo.setBlack(blackColorValue );
+                                type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_black), blackColorValue);
+                                break;
+                            case 0x01:
+                                int whiteColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
+                                deviceInfo.setWhite(whiteColorValue );
+                                type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_white), whiteColorValue);
+                                break;
+                            case 0x02:
+                                int redColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
+                                deviceInfo.setRed(redColorValue );
+                                deviceInfo.setDeviceType(1);
+                                type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_red), redColorValue);
+                                break;
+                            case 0x03:
+                                int yellowColorValue = (toByte[tagLength+4 + i] >> (3 - colorCount + 3)) & (colorCount == 2 ? 1 : 3);
+                                deviceInfo.setYellow(yellowColorValue );
+                                deviceInfo.setDeviceType(2);
+                                type = String.format("%s(%s)", UIUtils.getString(mContext, R.string.text_color_yellow), yellowColorValue);
+                                break;
+                            default:
+                                break;
+                        }
+                        colorType.append(type);
+                    }
+                    deviceInfo.setColorType(colorType.toString());
+                }
             }
 
             tagLength = tagLength+toByte[tagLength+1]+2;
@@ -210,7 +220,105 @@ public class IUtils {
                     deviceInfo.setCosVersion(2);
                 }
             }
+            tagLength = tagLength+toByte[tagLength+1]+2;
+            if(toByte[tagLength] == Constants.TLV_COLOR_INFO_EX)
+            {
+                int size = (toByte[tagLength+2] >> 4) & 0x0f;
+                deviceInfo.setSize(size);
+                int colorCount = toByte[tagLength+2] & 0x0F;
+
+                deviceInfo.setColorCount(colorCount);
+                StringBuilder colorType = new StringBuilder();
+                deviceInfo.setDeviceType(6);
+                for (int i = 0; i < colorCount; i++) {
+                    String type = "";
+                    byte value = (byte) ((toByte[tagLength + 4 + i * 2]) & 0xff);
+                    switch (value) {
+                        case 0x00:
+                            int blackColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setBlack(blackColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_black), (byte)blackColorValue);
+                            break;
+                        case 0x01:
+                            int whiteColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setWhite(whiteColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_white), (byte)whiteColorValue);
+                            break;
+                        case 0x02:
+                            int redColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setRed(redColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_red), (byte)redColorValue);
+                            break;
+                        case 0x03:
+                            int yellowColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setYellow(yellowColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_yellow), (byte)yellowColorValue);
+                            break;
+                        case 0x04:
+                            int orangeColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setOrangre(orangeColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_orange), (byte)orangeColorValue);
+                            break;
+                        case 0x05:
+                            int greenColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setGreen(greenColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_green), (byte)greenColorValue);
+                            break;
+                        case 0x06:
+                            int cyanColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setCyan(cyanColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_cyan), (byte)cyanColorValue);
+                            break;
+                        case 0x07:
+                            int blueColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setBlue(blueColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_blue), (byte)blueColorValue);
+                            break;
+                        case 0x08:
+                            int violetColorValue = toByte[tagLength + 5 + i * 2];
+                            deviceInfo.setViolet(violetColorValue );
+                            type = String.format("%s(%02X)", UIUtils.getString(mContext, R.string.text_color_violet), (byte)violetColorValue);
+                            break;
+                        default:
+                            break;
+                    }
+                    colorType.append(type);
+                }
+                deviceInfo.setColorType(colorType.toString());
+            }
+            tagLength = tagLength+toByte[tagLength+1]+2;
             if(toByte[toByte.length-2] == (byte)0x90 && toByte[toByte.length-1] == (byte)0x00){
+                byte[] color_desc = new byte[14];
+                String ColorDesc = null;
+                System.arraycopy(toByte, toByte.length - 16, color_desc, 0, 14);
+                if("4_color Screen".contentEquals(FMUtil.byteToString(color_desc)))
+                {
+                    deviceInfo.setColorDesc(FMUtil.byteToString(color_desc));
+                    ColorDesc = deviceInfo.getColorDesc();
+                }
+
+                if(null != ColorDesc)
+                {
+                    if((14 == deviceInfo.getColorDesc().length())&&("4_color Screen".contentEquals(deviceInfo.getColorDesc())))
+                    {
+                        int x = Integer.parseInt(info.substring(10, 14), 16)/2;
+                        int y = Integer.parseInt(info.substring(14, 18), 16);
+                        deviceInfo.setScreen(y + "x" + x);
+                        deviceInfo.setWidth(y);
+                        deviceInfo.setHeight(x);
+                        deviceInfo.setColor(UIUtils.getString(mContext, R.string.text_color_40_cn));
+                        deviceInfo.setEN_Color("4-color");
+                        deviceInfo.setDeviceType(3);
+                        deviceInfo.setColorCount(4);
+                        deviceInfo.setBlack(0);
+                        deviceInfo.setWhite(1);
+                        deviceInfo.setRed(3);
+                        deviceInfo.setYellow(2);
+                        String type = String.format("黑(0)白(1)红(3)黄(2)");
+                        deviceInfo.setColorType(type);
+                    }
+                }
+
                 deviceInfo.setPin(false);
             }else if(toByte[toByte.length-2] == (byte)0x69 && toByte[toByte.length-1] == (byte)0x85) {
                 deviceInfo.setPin(true);
@@ -296,7 +404,7 @@ public class IUtils {
         options.setCropGridStrokeWidth(2);//设置裁剪网格线的宽度(我这网格设置不显示，所以没效果)
         //options.setCropFrameStrokeWidth(1);//设置裁剪框的宽度
 //        options.setMaxScaleMultiplier(2);//设置最大缩放比例
-        options.setHideBottomControls(true);//隐藏下边控制栏
+        options.setHideBottomControls(false);//隐藏下边控制栏
         options.setShowCropGrid(true);  //设置是否显示裁剪网格
         //options.setOvalDimmedLayer(true);//设置是否为圆形裁剪框
         options.setShowCropFrame(true); //设置是否显示裁剪边框(true为方形边框)

@@ -3,44 +3,48 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jcenter.bintray.com' }
         jcenter()
-        mavenLocal()
-        maven { url 'https://maven.google.com' }
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-        jcenter {
-            url 'https://jcenter.bintray.com'
-        }
-
-       // maven { url 'https://mvnrepository.com/artifact' }  // Note: Adjust URL if necessary
     }
     dependencies {
-        // Update to a more recent version of the Android Gradle Plugin if possible
-        classpath "com.android.tools.build:gradle:7.2.1" // Example version, adjust as needed
+        classpath "com.android.tools.build:gradle:4.1.2"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        mavenLocal()
-        maven { url 'https://maven.google.com' }
-        // jcenter() removed as it is deprecated
+        jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url 'https://jcenter.bintray.com' }
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-        jcenter {
-            url 'https://jcenter.bintray.com'
-        }
-        //maven { url 'https://mvnrepository.com/artifact' }  // Note: Adjust URL if necessary
+    }
+
+    ext{
+        versionName = getVersionName()
+        versionCode = getVersionCode()
     }
 }
+
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+def  getVersionName() {
+    return "2.8.1"
+}
+def getVersionCode() {
+    String[] split = getVersionName().split("\\.");
+    String result = "";
+    for (int i = 0; i < split.length; i++) {
+        int parseInt = Integer.parseInt(split[i]);
+        String hex = Integer.toHexString(parseInt);
+        if (hex.length() != 2) {
+            hex = "0" + hex;
+        }
+        result = result + hex;
+    }
+    return Integer.parseInt(result, 16);
 }

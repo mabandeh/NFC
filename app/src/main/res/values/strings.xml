@@ -26,14 +26,21 @@
     <string name="text_color_20">Black White</string>
     <string name="text_color_30">Black White Red</string>
     <string name="text_color_31">Black White Yellow</string>
-
+    <string name="text_color">MC</string>
     <string name="text_color_20_cn">黑白双色</string>
     <string name="text_color_30_cn">黑白红三色</string>
     <string name="text_color_31_cn">黑白黄三色</string>
+    <string name="text_color_40_cn">黑白红黄四色</string>
+    <string name="text_color_cn">MC</string>
     <string name="text_color_black">黑</string>
     <string name="text_color_white">白</string>
     <string name="text_color_red">红</string>
     <string name="text_color_yellow">黄</string>
+    <string name="text_color_orange">橙</string>
+    <string name="text_color_green">绿</string>
+    <string name="text_color_cyan">青</string>
+    <string name="text_color_blue">蓝</string>
+    <string name="text_color_violet">紫</string>
 
 
     <string name="text_bind_device">请先绑定设备</string>
@@ -178,10 +185,16 @@
     <string name="pen_width">笔尖宽:</string>
 
     <string name="hint_error">请移动设备以找到合适的NFC接触区域</string>
+    <string name="hint_compress_error">压缩指令 返回异常:</string>
     <string name="import_background_image">导入背景模板图片</string>
 
     <string name="color_scale_1">色阶算法</string>
     <string name="color_scale_2">抖动算法</string>
+    <string name="string_convert_horiz">水平翻转</string>
+    <string name="string_convert_vert">垂直翻转</string>
+    <string name="string_rotate_90">向右旋转90度</string>
+    <string name="string_rotate_90_2">向左旋转90度</string>
+    <string name="string_rotate_180">旋转180度</string>
 
 
 </resources>

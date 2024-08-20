@@ -1,5 +1,7 @@
 package com.fmsh.einkesl.bean;
 
+import android.graphics.Bitmap;
+
 import com.fmsh.base.utils.UIUtils;
 import com.fmsh.einkesl.R;
 
@@ -132,6 +134,14 @@ public class DeviceInfo {
         this.height = height;
     }
 
+    public int getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(int deviceType) {
+        this.deviceType = deviceType;
+    }
+
     /**
      * 是否支持PIN码
      */
@@ -194,6 +204,44 @@ public class DeviceInfo {
         this.yellow = yellow;
     }
 
+    ///
+    public int getOrange() {
+        return orange;
+    }
+
+    public void setOrangre(int orange) {
+        this.orange = orange;
+    }
+    public int getGreen() {
+        return green;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+    public int getCyan() {
+        return cyan;
+    }
+
+    public void setCyan(int cyan) {
+        this.cyan = cyan;
+    }
+    public int getBlue() {
+        return blue;
+    }
+
+    public void setBlue(int blue) {
+        this.blue = blue;
+    }
+    public int getViolet() {
+        return violet;
+    }
+
+    public void setViolet(int violet) {
+        this.violet = violet;
+    }
+    ///
+
     public int getColorCount() {
         return colorCount;
     }
@@ -213,10 +261,17 @@ public class DeviceInfo {
      */
     private String colorType = "";
 
+    private int deviceType = 0; //0黑白 1 黑白红价签  2 黑白黄价签
+
     private int black;
     private int white;
     private int red;
-
+    private int yellow;
+    private int orange;
+    private int green;
+    private int cyan;
+    private int blue;
+    private int violet;
     public int getCosVersion() {
         return cosVersion;
     }
@@ -225,8 +280,14 @@ public class DeviceInfo {
         this.cosVersion = cosVersion;
     }
 
-    private int yellow;
 
+    private String color_desc;
+    public void setColorDesc(String cds) {
+        this.color_desc = cds;
+    }
+    public String getColorDesc() {
+        return this.color_desc;
+    }
     private int cosVersion;
     /**
      * 扫描类型
@@ -278,11 +339,39 @@ public class DeviceInfo {
         return pinCode;
     }
 
+    public Bitmap getBitmap() {
+        return mBitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
+    }
+
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
     }
 
     private String pinCode = "1122334455";
+
+    /**
+     * 需要加载的图片
+     */
+    private Bitmap mBitmap;
+
+
+    public byte[] getCompressData() {
+        return compressData;
+    }
+
+    public void setCompressData(byte[] compressData) {
+        this.compressData = compressData;
+    }
+
+    /**
+     * 图片压缩数据
+     */
+    private byte[] compressData;
+
 
 
 }

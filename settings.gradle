@@ -1,6 +1,3 @@
 include ':base'
-include ':arch-compiler'
-include ':arch'
-include ':qmui'
 include ':app'
 rootProject.name = "EinkEsl"

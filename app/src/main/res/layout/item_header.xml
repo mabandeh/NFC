@@ -30,16 +30,43 @@
             android:id="@+id/rb2"
             android:text="@string/color_scale_2"
             android:layout_height="wrap_content"/>
+
     </RadioGroup>
 
+    <LinearLayout
+        android:id="@+id/convert"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_convert_horiz" />
+
+        <CheckBox
+            android:id="@+id/cb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_convert_vert" />
+
+        <CheckBox
+            android:id="@+id/cb5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_rotate_180" />
+
+    </LinearLayout>
+
     <SeekBar
+        android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:id="@+id/seekBar"
-        android:max="255"
-        android:min="1"
         android:layout_margin="20dp"
-        />
+        android:max="255"
+        android:min="1" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"

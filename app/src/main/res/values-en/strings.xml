@@ -183,6 +183,12 @@
 
     <string name="color_scale_1">Color scale</string>
     <string name="color_scale_2">Dithering algorithm</string>
+    <string name="text_color_40_cn">黑白红黄四色</string>
+    <string name="string_rotate_90_2">Left Rotate 90</string>
+    <string name="string_rotate_90">Right Rotate 90</string>
+    <string name="string_rotate_180">Rotate 180</string>
+    <string name="string_convert_horiz">"Horizon Flip "</string>
+    <string name="string_convert_vert">Vertical  Flip</string>
 
 
 </resources>

@@ -15,6 +15,7 @@ public class Constants {
     public static final byte TLV_APPID = (byte) 0xC0;            //APPID
     public static final byte TLV_UUID = (byte) 0xC1;           //UUID
     public static final byte TLV_RFU = (byte) 0xD1;           //RFU
+    public static final byte TLV_COLOR_INFO_EX = (byte) 0xE0;           //RFU
 
 
     /**

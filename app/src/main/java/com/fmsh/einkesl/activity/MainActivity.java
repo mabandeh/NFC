@@ -11,7 +11,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -135,29 +138,19 @@ public class MainActivity extends BaseNFCActivity {
                         showNfcDialog();
                         break;
                     case 1:
-                        IUtils.selectPicture(MainActivity.this);
+                        requestPermission(position);
                         break;
                     case 4:
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-                        } else {
-                            IUtils.openCamera(MainActivity.this);
-                        }
+                        requestPermission(position);
+
                         break;
                     case 2:
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                        } else {
+                        requestPermission(position);
 
-                            startActivity(null, TextGenerateBmpActivity.class);
-                        }
                         break;
                     case 3:
-                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
-                        } else {
-                            startActivity(null, CustomImageActivity.class);
-                        }
+                        requestPermission(position);
+
                         break;
                     case 5:
                         startActivity(null, CommandActivity.class);
@@ -170,7 +163,84 @@ public class MainActivity extends BaseNFCActivity {
         });
     }
 
+    private void requestPermission(int type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+                switch (type){
+                    case 1:
+                        IUtils.selectPicture(MainActivity.this);
+                        break;
+                    case 2:
+                        startActivity(null, TextGenerateBmpActivity.class);
+                        break;
+                    case 3:
+                        startActivity(null, CustomImageActivity.class);
+                        break;
+                    case 4:
+                        IUtils.openCamera(MainActivity.this);
+                        break;
+                }
 
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + mContext.getPackageName()));
+                startActivityForResult(intent, 100);
+            }
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 先判断有没有权限
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
+                switch (type){
+                    case 1:
+                        IUtils.selectPicture(MainActivity.this);
+                        break;
+                    case 2:
+                        startActivity(null, TextGenerateBmpActivity.class);
+                        break;
+                    case 3:
+                        startActivity(null, CustomImageActivity.class);
+                        break;
+                    case 4:
+                        IUtils.openCamera(MainActivity.this);
+                        break;
+                }
+            } else {
+                int REQUEST_CODE = 0;
+                switch (type){
+                    case 1:
+                        REQUEST_CODE = 0;
+                        break;
+                    case 2:
+
+                        REQUEST_CODE = 101;
+                        break;
+                    case 3:
+
+                        REQUEST_CODE = 102;
+                        break;
+                    case 4:
+                        REQUEST_CODE = 100;
+                        break;
+                }
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+            }
+        } else {
+            switch (type){
+                case 1:
+                    IUtils.selectPicture(MainActivity.this);
+                    break;
+                case 2:
+                    startActivity(null, TextGenerateBmpActivity.class);
+                    break;
+                case 3:
+                    startActivity(null, CustomImageActivity.class);
+                    break;
+                case 4:
+                    IUtils.openCamera(MainActivity.this);
+                    break;
+            }
+        }
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -187,10 +257,13 @@ public class MainActivity extends BaseNFCActivity {
                     startActivity(null, CustomImageActivity.class);
                     break;
                 default:
+                    IUtils.selectPicture(MainActivity.this);
                     break;
 
             }
 
+        }else {
+           HintDialog.messageDialog("请打开相应的权限");
         }
     }
 
@@ -261,6 +334,7 @@ public class MainActivity extends BaseNFCActivity {
     }
 
 
+
     private QMUICommonListItemView createItem(String text) {
         QMUICommonListItemView itemView = mGroupListView.createItemView(text);
         QMUILoadingView qmuiLoadingView = new QMUILoadingView(mContext);
@@ -293,6 +367,7 @@ public class MainActivity extends BaseNFCActivity {
         mItemView4.setDetailText(mDeviceInfo.getManufacturer());
         mItemView5.setDetailText(mDeviceInfo.getColorType());
         if(mDeviceInfo.getCosVersion() != 2){
+            //重新绑定,输入PIN
             if(mDeviceInfo.getPin() ){
                 mItemView6.setVisibility(View.VISIBLE);
             }else {

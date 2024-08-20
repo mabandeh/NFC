@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -32,6 +34,7 @@ import com.fmsh.base.utils.UIUtils;
 import com.fmsh.einkesl.App;
 import com.fmsh.einkesl.R;
 import com.fmsh.einkesl.adapter.RefreshScreenAdapter;
+import com.fmsh.einkesl.bean.DeviceInfo;
 import com.fmsh.einkesl.tools.MyThread;
 import com.fmsh.einkesl.tools.image.BMPConverterUtil;
 import com.fmsh.einkesl.tools.image.BmpUtils;
@@ -69,6 +72,9 @@ public class RefreshScreenActivity extends BaseNFCActivity {
     private String mPin;
     private boolean isLvl = true;
 
+    private Bitmap  shakeImage; // 抖动图片
+    private Bitmap  colorLevelImage; // 色阶图片
+
 
     @Override
     protected int getLayoutId() {
@@ -89,19 +95,88 @@ public class RefreshScreenActivity extends BaseNFCActivity {
         RadioButton rb1 = view.findViewById(R.id.rb1);
         RadioButton rb2 = view.findViewById(R.id.rb2);
         RadioGroup rg = view.findViewById(R.id.rg);
+        CheckBox   cb1= view.findViewById(R.id.cb1);
+        CheckBox   cb2= view.findViewById(R.id.cb2);
+        CheckBox   cb5= view.findViewById(R.id.cb5);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (rb1.isChecked()) {
                     isLvl = true;
+                    if(colorLevelImage == null){
+                        loadImage();
+                    }
+                    App.getDeviceInfo().setBitmap(colorLevelImage);
+                    mImageView.setImageBitmap(colorLevelImage);
                 } else {
                     isLvl = false;
+                    if(shakeImage == null){
+                        loadImage();
+                    }
+                    App.getDeviceInfo().setBitmap(shakeImage);
+                    mImageView.setImageBitmap(shakeImage);
                 }
-                loadImage();
+
 
             }
         });
-
+        cb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            //水平翻转
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Bitmap bm = (isLvl == true)?colorLevelImage:shakeImage;
+                if(null != bm) {
+                    transformImage(bm, true, false, (char)0);
+                    if(isLvl == true)
+                    {
+                        App.getDeviceInfo().setBitmap(colorLevelImage);
+                        mImageView.setImageBitmap(colorLevelImage);
+                    }
+                    else {
+                        App.getDeviceInfo().setBitmap(shakeImage);
+                        mImageView.setImageBitmap(shakeImage);
+                    }
+                }
+            }
+        });
+        cb2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            //垂直翻转
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Bitmap bm = (isLvl == true)?colorLevelImage:shakeImage;
+                if(null != bm) {
+                    transformImage(bm, false, true, (char)0);
+                    if(isLvl == true)
+                    {
+                        App.getDeviceInfo().setBitmap(colorLevelImage);
+                        mImageView.setImageBitmap(colorLevelImage);
+                    }
+                    else {
+                        App.getDeviceInfo().setBitmap(shakeImage);
+                        mImageView.setImageBitmap(shakeImage);
+                    }
+                }
+            }
+        });
+        cb5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            //旋转180度
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Bitmap bm = (isLvl == true)?colorLevelImage:shakeImage;
+                if(null != bm) {
+                    transformImage(bm, false, false, (char)1);
+                    if(isLvl == true)
+                    {
+                        App.getDeviceInfo().setBitmap(colorLevelImage);
+                        mImageView.setImageBitmap(colorLevelImage);
+                    }
+                    else {
+                        App.getDeviceInfo().setBitmap(shakeImage);
+                        mImageView.setImageBitmap(shakeImage);
+                    }
+                }
+            }
+        });
         seekBar = view.findViewById(R.id.seekBar);
         mEtPin = view.findViewById(R.id.et_pin);
         if(App.getDeviceInfo().getCosVersion() != 2){
@@ -223,6 +298,10 @@ public class RefreshScreenActivity extends BaseNFCActivity {
     @Override
     protected void initData() {
         loadImage();
+        App.getDeviceInfo().setBitmap(colorLevelImage);
+        isLvl= true;
+        loadImage();
+        mImageView.setImageBitmap(colorLevelImage);
         BroadcastManager.getInstance(mContext).addAction(NfcConstant.KEY_TAG, new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -265,63 +344,125 @@ public class RefreshScreenActivity extends BaseNFCActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(mBmpFilePath, options);
                 bitmap = BmpUtils.zoomBitmapEx(bitmap, App.getDeviceInfo().getWidth(), App.getDeviceInfo().getHeight());
                 //                 bitmap = ImageScalingUtil.compressBitmapFromPath(mBmpFilePath, App.getDeviceInfo().getWidth(),App.getDeviceInfo().getHeight());
-                if (App.getDeviceInfo().getColorCount() == 2) {
-                    byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, 0, isLvl);
-                    BmpUtils.saveBmp(bitmap, BmpUtils.getImagePath("bw.bmp"), bytes);
-                    BmpUtils.Convert24bmpToBlackWithebmp(BmpUtils.getImagePath("bw.bmp"), BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME), true);
-                    mBmpFilePath = BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME);
-                } else {
-
-                    byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, 1, isLvl);
-                    mBmpFilePath = BmpUtils.getImagePath("floydSteinberg.bmp");
-
-                    BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
-
+                String ColorDesc =App.getDeviceInfo().getColorDesc();
+                if(null == ColorDesc)
+                {
+                    if (App.getDeviceInfo().getColorCount() == 2) {
+                        byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
+                        BmpUtils.saveBmp(bitmap, BmpUtils.getImagePath("bw.bmp"), bytes);
+                        BmpUtils.Convert24bmpToBlackWithebmp(BmpUtils.getImagePath("bw.bmp"), BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME), true);
+                        mBmpFilePath = BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME);
+                    } else {
+                        byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
+                        mBmpFilePath = BmpUtils.getImagePath("floydSteinberg.bmp");
+                        BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
+                    }
+                }
+                else {
+                    if ((14 == App.getDeviceInfo().getColorDesc().length()) && ("4_color Screen".contentEquals(App.getDeviceInfo().getColorDesc()))) {//四色图处理
+                        byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
+                        mBmpFilePath = BmpUtils.getImagePath("floydSteinberg.bmp");
+                        BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
+                    }
                 }
 
-                //               BmpUtils.saveBmp(bitmap);
-                //                mBmpFilePath = BmpUtils.getImagePath();
-                //                seekBar.setVisibility(View.VISIBLE);
-                //                mBmpFilePath = BmpUtils.binarization(App.getDeviceInfo().getWidth()/8);
-                //                mImageView.setImageBitmap(bitmap);
             } else {
                 mBmpFilePath = BmpUtils.getImagePath();
                 Bitmap bitmap = BitmapFactory.decodeFile(mBmpFilePath, options);
                 bitmap = BmpUtils.zoomBitmapEx(bitmap, App.getDeviceInfo().getWidth(), App.getDeviceInfo().getHeight());
                 if (App.getDeviceInfo().getColorCount() == 2) {
-                    byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, 0, isLvl);
+                    byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
                     BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
                     BmpUtils.Convert24bmpToBlackWithebmp(mBmpFilePath, BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME), true);
                     mBmpFilePath = BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME);
                 } else {
 
-                    byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, 1, isLvl);
+                    byte[] bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
                     mBmpFilePath = BmpUtils.getImagePath("binarization.bmp");
                     BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
 
                 }
             }
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(mBmpFilePath, options));
+            if(isLvl){
+                colorLevelImage = BitmapFactory.decodeFile(mBmpFilePath, options);
+            }else {
+                shakeImage = BitmapFactory.decodeFile(mBmpFilePath, options);
+
+            }
         } else {
             LogUtil.d("1111");
             Bitmap bitmap = BitmapFactory.decodeFile(mBmpFilePath, options);
             mBmpFilePath = BmpUtils.getImagePath("tp.bmp");
             byte[] bytes;
-            if(App.getDeviceInfo().getColorCount() == 2){
-                bytes= BMPConverterUtil.floydSteinberg(bitmap, 0, isLvl);
-                BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
-                BmpUtils.Convert24bmpToBlackWithebmp(mBmpFilePath, BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME), true);
-                mBmpFilePath = BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME);
-            }else {
-                bytes = BMPConverterUtil.floydSteinberg(bitmap, 1, isLvl);
+            String ColorDesc = App.getDeviceInfo().getColorDesc();
+            if(null == ColorDesc)
+            {
+                if(App.getDeviceInfo().getColorCount() == 2){
+                    bytes= BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
+                    BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
+                    BmpUtils.Convert24bmpToBlackWithebmp(mBmpFilePath, BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME), true);
+                    mBmpFilePath = BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME);
+                }else {
+                    bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
+                    BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
+                }
+            }
+            else if((14 == App.getDeviceInfo().getColorDesc().length())&&("4_color Screen".contentEquals(App.getDeviceInfo().getColorDesc())))
+            {//四色图处理
+                bytes = BMPConverterUtil.floydSteinberg(bitmap, App.getDeviceInfo().getDeviceType(), isLvl);
+
                 BmpUtils.saveBmp(bitmap, mBmpFilePath, bytes);
             }
+            if(isLvl){
+                colorLevelImage = BitmapFactory.decodeFile(mBmpFilePath, options);
+            }else {
+                shakeImage = BitmapFactory.decodeFile(mBmpFilePath, options);
 
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(mBmpFilePath, options));
+            }
+
             image.setVisibility(View.GONE);
         }
     }
+    private void transformImage(Bitmap bm, boolean Hconvert, boolean Vconvert, char Rotate) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
 
+        //默认值为false，如果设置成true，那么在解码的时候就不会返回bitmap，即bitmap = null。
+        options.inJustDecodeBounds = false;
+        //可以复用之前用过的bitmap
+        options.inBitmap = null;
+        //是该bitmap缓存是否可变，如果设置为true，将可被inBitmap复用
+        options.inMutable = true;
+        //bitmap = BmpUtils.zoomBitmapEx(bitmap, App.getDeviceInfo().getWidth(), App.getDeviceInfo().getHeight());
+        //                 bitmap = ImageScalingUtil.compressBitmapFromPath(mBmpFilePath, App.getDeviceInfo().getWidth(),App.getDeviceInfo().getHeight());
+        String ColorDesc =App.getDeviceInfo().getColorDesc();
+        if(null == ColorDesc)
+        {
+                    if (App.getDeviceInfo().getColorCount() == 2) {
+                        byte[] bytes = BMPConverterUtil.floydSteinbergTransformer(bm, App.getDeviceInfo().getDeviceType(), isLvl, Hconvert, Vconvert, Rotate);
+                        BmpUtils.saveBmp(bm,  BmpUtils.getImagePath("bw.bmp"), bytes);
+                        BmpUtils.Convert24bmpToBlackWithebmp(BmpUtils.getImagePath("bw.bmp"), BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME), true);
+                        mBmpFilePath = BmpUtils.getImagePath(Constants.IMAGE_BLACK_WHITE_NAME);
+
+                    } else {
+                        byte[] bytes = BMPConverterUtil.floydSteinbergTransformer(bm, App.getDeviceInfo().getDeviceType(), isLvl, Hconvert, Vconvert, Rotate);
+                        mBmpFilePath = BmpUtils.getImagePath("floydSteinberg.bmp");
+                        BmpUtils.saveBmp(bm, mBmpFilePath, bytes);
+                    }
+        }
+        else {
+            if ((14 == App.getDeviceInfo().getColorDesc().length()) && ("4_color Screen".contentEquals(App.getDeviceInfo().getColorDesc()))) {//四色图处理
+                byte[] bytes = BMPConverterUtil.floydSteinbergTransformer(bm, App.getDeviceInfo().getDeviceType(), isLvl, Hconvert, Vconvert, Rotate);
+                mBmpFilePath = BmpUtils.getImagePath("floydSteinberg.bmp");
+                BmpUtils.saveBmp(bm, mBmpFilePath, bytes);
+            }
+        }
+        if(isLvl){
+            colorLevelImage = BitmapFactory.decodeFile(mBmpFilePath, options);
+        }else {
+            shakeImage = BitmapFactory.decodeFile(mBmpFilePath, options);
+
+        }
+    }
     private void deleteTempImage() {
         try {
             File file = new File(mBmpFilePath);

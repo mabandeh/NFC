@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.fmsh.base.ui.BaseNFCActivity;
 import com.fmsh.base.utils.BroadcastManager;
@@ -19,6 +23,7 @@ import com.fmsh.base.utils.UIUtils;
 import com.fmsh.einkesl.App;
 import com.fmsh.einkesl.R;
 import com.fmsh.einkesl.tools.MyThread;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -36,9 +41,13 @@ public class CommandActivity extends BaseNFCActivity {
     Button btnConfirm;
     @BindView(R.id.tvContent)
     TextView tvContent;
+    @BindView(R.id.topbar)
+    QMUITopBarLayout topbar;
+    @BindView(R.id.btn_confirm_edep)
+    Button btnConfirmEdep;
     private ReceiveHandler mReceiveHandler;
     private String mApdu;
-
+    static private String mResps;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_command;
@@ -46,6 +55,7 @@ public class CommandActivity extends BaseNFCActivity {
 
     @Override
     protected void initView() {
+        btnConfirmEdep.setText(btnConfirmEdep.getText().toString()+"(EDEP)");
         mReceiveHandler = new ReceiveHandler(this);
         setTitle(UIUtils.getString(R.string.text_customer));
         setBackImage();
@@ -58,6 +68,8 @@ public class CommandActivity extends BaseNFCActivity {
                     bundle.putParcelable(NfcConstant.KEY_TAG, mTag);
                     bundle.putInt("position", 2);
                     bundle.putString("apdu", mApdu);
+                    bundle.putBoolean("isPin",isEDEP);
+                    bundle.putString("pin","1122334455");
                     App.setHandler(mReceiveHandler);
                     UIUtils.sendMessage(bundle, 0, MyThread.getInstance().getMyHandler());
                 }
@@ -70,18 +82,48 @@ public class CommandActivity extends BaseNFCActivity {
 
     }
 
-    @OnClick(R.id.btn_confirm)
+    @OnClick({R.id.btn_confirm})
     public void onClick() {
+
+    }
+
+    @OnClick({R.id.btn_confirm, R.id.btn_confirm_edep})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_confirm:
+                isEDEP = false;
+                break;
+            case R.id.btn_confirm_edep:
+                isEDEP = true;
+                break;
+        }
+        sendApdu();
+    }
+
+    private boolean isEDEP = false;
+    private void sendApdu(){
+
         mApdu = etApdu.getText().toString();
+        String[] apdu = mApdu.split(",");
         if (mApdu.isEmpty()) {
             HintDialog.messageDialog(UIUtils.getString(R.string.empty_data));
             return;
         }
-        if (mApdu.length() % 2 != 0 || !mApdu.matches(Constant.HEX_REGULAR)) {
-            HintDialog.messageDialog(UIUtils.getString(R.string.empty_incorrect));
-            return;
+        for(int i = 0;i< apdu.length;i++)
+        {
+            if (apdu[i].length() % 2 != 0 || !apdu[i].matches(Constant.HEX_REGULAR)) {
+                HintDialog.messageDialog("APDU" + i + ": " +UIUtils.getString(R.string.empty_incorrect));
+                return;
+            }
         }
+
         showNfcDialog();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        tvContent.setMovementMethod(new ScrollingMovementMethod());
     }
 
     public static class ReceiveHandler extends Handler {
@@ -101,7 +143,13 @@ public class CommandActivity extends BaseNFCActivity {
                     case 0:
                         String result = (String) msg.obj;
                         activity.tvContent.setText(result);
-
+                    case 1:
+                        mResps += (String) msg.obj;
+                        activity.tvContent.setText(mResps);
+                        break;
+                    case 2:
+                        mResps = "";
+                        activity.tvContent.setText(mResps);
                         break;
                     default:
                         HintDialog.faileDialog(activity.mContext, UIUtils.getString(activity.mContext, R.string.text_error));

@@ -62,7 +62,7 @@ public class BmpUtils {
                     + (int) ((bmpdata1[0x18]) << 0x16)
                     + (int) (bmpdata1[0x17] << 0x8)
                     + (int) (bmpdata1[0x16] & 0xff);
-            if (bmpwidth != deviceInfo.getWidth() || bmpheight != deviceInfo.getHeight()) {
+           if (bmpwidth != deviceInfo.getWidth() || bmpheight != deviceInfo.getHeight()) {
                 return false;
             }
             // 格式错
@@ -84,6 +84,18 @@ public class BmpUtils {
                 color = 2;
             }
             if (deviceInfo.getColorCount() != color) {
+                String ColorDesc = App.getDeviceInfo().getColorDesc();
+                if(null != ColorDesc)
+                {
+                    if((4 == deviceInfo.getColorCount())&&(14 == deviceInfo.getColorDesc().length())&&("4_color Screen".contentEquals(deviceInfo.getColorDesc())))
+                    {
+                        return true;
+                    }
+                }
+                else if(deviceInfo.getColorCount() > 4)
+                {
+                    return true;
+                }
                 return false;
             }
 
@@ -432,8 +444,7 @@ public class BmpUtils {
      * @return
      */
     public static String GetSdDirPath() {
-        String sdcardPath = App.getContext().getCacheDir().getPath();
-
+        String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
         sdcardPath = sdcardPath + "/data";
         File file = new File(sdcardPath);
 
@@ -1228,16 +1239,16 @@ public class BmpUtils {
             if (enablegray) {
                 int gray = (int) ((float) (bmpdata1[locoffset + offset] & 0xff) * 0.3 + (float) (bmpdata1[locoffset + offset + 1] & 0xff) * 0.59 + (float) (bmpdata1[locoffset + offset + 2] & 0xff) * 0.11);
                 if (gray < 180) { //180比较 好的数字，没有意义，就是偏向白色
-                    singlebmpdata1[j++] = 0;
+                    singlebmpdata1[j++] = (byte) (App.getDeviceInfo().getWhite() > 0 ? 1:0);
                 } else {
-                    singlebmpdata1[j++] = 1;
+                    singlebmpdata1[j++] = (byte) (App.getDeviceInfo().getBlack() > 0 ? 1:0);
                 }
             } else {
                 // 取黑白
                 if (bmpdata1[locoffset + offset] == (byte) 0xff && bmpdata1[locoffset + offset + 1] == (byte) 0xff && bmpdata1[locoffset + offset + 2] == (byte) 0xff) {
-                    singlebmpdata1[j++] = 1;
+                    singlebmpdata1[j++] = (byte) (App.getDeviceInfo().getBlack() > 0 ? 1:0);
                 } else {
-                    singlebmpdata1[j++] = 0;
+                    singlebmpdata1[j++] = (byte) (App.getDeviceInfo().getWhite() > 0 ? 1:0);
                 }
             }
             //            // 取黑白

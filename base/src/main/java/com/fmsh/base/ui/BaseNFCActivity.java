@@ -8,8 +8,10 @@ import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
 import android.nfc.tech.NfcA;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.system.Os;
 
 import androidx.annotation.Nullable;
 
@@ -41,7 +43,11 @@ public abstract class BaseNFCActivity extends BaseActivity {
         }
 //        startReaderMode();
         if (mNfcAdapter != null) {
-            mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            int flag = 0;
+//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+//                flag = PendingIntent.FLAG_IMMUTABLE;
+//            }
+            mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), flag);
         }
 
     }

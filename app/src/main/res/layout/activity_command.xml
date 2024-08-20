@@ -5,33 +5,65 @@
     <include
         layout="@layout/toobar"
         />
-    <EditText
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="0084000004"
-        android:id="@+id/et_apdu"
-        />
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="50dp"
-        android:textColor="@color/qmui_config_color_white"
-        android:textSize="20dp"
-        android:text="@string/string_send_apdu_id"
-        android:background="@drawable/shape_btn"
-        android:id="@+id/btn_confirm"
-        />
+        <EditText
+            android:id="@+id/et_apdu"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="0dp"
+            android:hint="0084000004" />
 
-    <TextView
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/shape_btn"
+            android:text="@string/string_send_apdu_id"
+            android:textColor="@color/qmui_config_color_white"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btn_confirm_edep"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/shape_btn"
+            android:text="@string/string_send_apdu_id"
+            android:textColor="@color/qmui_config_color_white"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textColor="@color/black"
-        android:id="@+id/tvContent"
-        />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:fadeScrollbars="false"
+            android:focusable="auto"
+            android:focusableInTouchMode="true"
+            android:padding="16dp"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbarThumbVertical="@drawable/shadow_right"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:textColor="@color/black" />
+    </LinearLayout>
 
 </LinearLayout>
