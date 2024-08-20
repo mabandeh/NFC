@@ -444,7 +444,8 @@ public class BmpUtils {
      * @return
      */
     public static String GetSdDirPath() {
-        String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String sdcardPath = App.getContext().getCacheDir().getPath();
+
         sdcardPath = sdcardPath + "/data";
         File file = new File(sdcardPath);
 

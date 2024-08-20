@@ -2,9 +2,6 @@ plugins {
     id 'com.android.application'
 }
 
-
-
-
 android {
     compileSdkVersion 30
 
@@ -12,8 +9,8 @@ android {
         applicationId "com.fmsh.einkesl"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode parent.ext.versionCode
-        versionName parent.ext.versionName
+        versionCode 10
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,7 +27,6 @@ android {
     }
 }
 
-
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -46,7 +42,11 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-    compile(name:'compress-release', ext:'aar')
+    implementation(name:'compress-release', ext:'aar')
+   // compileOnly "org.jetbrains.kotlin:kotlin-stdlib1.3.61"
+    implementation 'com.qmuiteam:qmui:2.0.1'
+    implementation 'com.qmuiteam:arch:2.0.1'
+    annotationProcessor  'com.qmuiteam:arch-compiler:2.0.1'
 }
 
 repositories {
