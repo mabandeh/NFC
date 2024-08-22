@@ -444,7 +444,8 @@ public class BmpUtils {
      * @return
      */
     public static String GetSdDirPath() {
-        String sdcardPath = App.getContext().getCacheDir().getPath();
+      //  String sdcardPath = App.getContext().getCacheDir().getPath();
+        String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         sdcardPath = sdcardPath + "/data";
         File file = new File(sdcardPath);
@@ -1075,19 +1076,16 @@ public class BmpUtils {
     }
 
 
-    /**
-     * 把24位真彩色的图片转换成  黑白单色的图
-     *
-     * @return
-     */
-    public static boolean Convert24bmpToBlackWithebmp(String strSrcBmpFile, String strDestBmpFile, boolean EnableGray) {
+
+    public static boolean Convert24bmpToFourColorBmp(String strSrcBmpFile, String strDestBmpFile, boolean EnableGray) {
         int width = App.getDeviceInfo().getWidth();
         int height = App.getDeviceInfo().getHeight();
         byte[] srcBmpData = ReadBmp24FileOrg(strSrcBmpFile, width, height);
         if (srcBmpData == null) {
             return false;
         }
-        //计算目标黑白图的实际的字节快读
+
+        // Calculate the actual byte width for the destination image
         int destRealWidth = (int) Math.ceil(width / 8.0);
         int destWidth = 0;
         int percent = destRealWidth % 4;
@@ -1096,92 +1094,124 @@ public class BmpUtils {
         } else {
             destWidth = destRealWidth;
         }
-        //int vbitsRow = (int) Math.ceil(height / 8.0);
 
-        int datasize = 0x3E + destWidth * height;
-        byte[] colorData1 = new byte[datasize];
-        ; //获取颜色数据
-        getColorDataBmp24(srcBmpData, width, height, colorData1, destWidth, destRealWidth, EnableGray);
+        int datasize = 0x3E + destWidth * height * 4; // Adjusted for 4 colors
+        byte[] colorData = new byte[datasize];
 
-        colorData1[0] = 0x42;
-        colorData1[1] = 0x4D; // 文件标识
-        colorData1[2] = (byte) (datasize & 0xff);
-        colorData1[3] = (byte) ((datasize & 0xff00) >> 8);
-        colorData1[4] = (byte) ((datasize & 0xff0000) >> 16);
-        colorData1[5] = (byte) ((datasize & 0xff000000) >> 24);//4个字节的整个文件大小
-        colorData1[6] = 0x00;
-        colorData1[7] = 0x00;
-        colorData1[8] = 0x00;
-        colorData1[9] = 0x00; //保留字节
-        colorData1[0xa] = 0x3e;//从文件开始到位图数据开始之间的数据(bitmap data)之间的偏移值
-        colorData1[0xb] = 0x00;
-        colorData1[0xc] = 0x00;
-        colorData1[0xd] = 0x00;
-        colorData1[0xe] = 0x28;//位图信息头  一般都是0x28
-        colorData1[0xf] = 0x00;
-        colorData1[0x10] = 0x00;
-        colorData1[0x11] = 0x00;
-        colorData1[0x12] = (byte) ((width & 0xff));
-        colorData1[0x13] = (byte) ((width & 0xff00) >> 8);
-        colorData1[0x14] = (byte) ((width & 0xff0000) >> 16);
-        colorData1[0x15] = (byte) ((width & 0xff000000) >> 24);
-        colorData1[0x16] = (byte) ((height & 0xff));
-        colorData1[0x17] = (byte) ((height & 0xff00) >> 8);
-        ;
-        colorData1[0x18] = (byte) ((height & 0xff0000) >> 16);
-        ;
-        colorData1[0x19] = (byte) ((height & 0xff000000) >> 24);
-        colorData1[0x1a] = 0x1; //位图的位面
-        colorData1[0x1b] = 0x00;
-        colorData1[0x1c] = 0x1;
-        colorData1[0x1d] = 0x00;
-        colorData1[0x1e] = 0x00;//压缩说明
-        colorData1[0x1f] = 0x00;
-        colorData1[0x20] = 0x0;
-        colorData1[0x21] = 0x0;
-        colorData1[0x22] = (byte) 0xe0;
-        colorData1[0x23] = (byte) 0x0b;
-        colorData1[0x24] = 0x00;
-        ;
-        colorData1[0x25] = 0x00;
-        colorData1[0x26] = 0x00;
-        colorData1[0x27] = 0x00;
-        colorData1[0x28] = 0x00;
-        colorData1[0x29] = 0x00;
-        colorData1[0x2a] = 0x00;
-        colorData1[0x2b] = 0x00;
-        colorData1[0x2c] = 0x00;
-        colorData1[0x2d] = 0x00;
-        colorData1[0x2e] = 0x00;
-        colorData1[0x2f] = 0x00;
-        colorData1[0x30] = 0x0;
-        colorData1[0x31] = (byte) 0x0;
-        colorData1[0x32] = (byte) 0x0;
-        colorData1[0x33] = 0x00;
-        colorData1[0x34] = 0x00;
-        colorData1[0x35] = 0x00;
-        colorData1[0x36] = 0x00;
-        colorData1[0x37] = 0x00;
-        colorData1[0x38] = 0x00;
-        colorData1[0x39] = 0x00;
-        colorData1[0x3a] = (byte) 0xFF;
-        colorData1[0x3b] = (byte) 0xFF;
-        colorData1[0x3c] = (byte) 0xFF;
-        colorData1[0x3d] = 0x00;
+        // Get color data and map it to 4 colors (Red, Yellow, Black, White)
+        getFourColorDataBmp24(srcBmpData, width, height, colorData, destWidth, EnableGray);
+
+        // Set BMP headers
+        colorData[0] = 0x42;
+        colorData[1] = 0x4D; // File identifier
+        colorData[2] = (byte) (datasize & 0xff);
+        colorData[3] = (byte) ((datasize & 0xff00) >> 8);
+        colorData[4] = (byte) ((datasize & 0xff0000) >> 16);
+        colorData[5] = (byte) ((datasize & 0xff000000) >> 24);
+        colorData[6] = 0x00;
+        colorData[7] = 0x00;
+        colorData[8] = 0x00;
+        colorData[9] = 0x00; // Reserved bytes
+        colorData[0xa] = 0x3e; // Offset to bitmap data
+        colorData[0xb] = 0x00;
+        colorData[0xc] = 0x00;
+        colorData[0xd] = 0x00;
+        colorData[0xe] = 0x28; // Bitmap info header
+        colorData[0xf] = 0x00;
+        colorData[0x10] = 0x00;
+        colorData[0x11] = 0x00;
+        colorData[0x12] = (byte) ((width & 0xff));
+        colorData[0x13] = (byte) ((width & 0xff00) >> 8);
+        colorData[0x14] = (byte) ((width & 0xff0000) >> 16);
+        colorData[0x15] = (byte) ((width & 0xff000000) >> 24);
+        colorData[0x16] = (byte) ((height & 0xff));
+        colorData[0x17] = (byte) ((height & 0xff00) >> 8);
+        colorData[0x18] = (byte) ((height & 0xff0000) >> 16);
+        colorData[0x19] = (byte) ((height & 0xff000000) >> 24);
+        colorData[0x1a] = 0x1; // Bitmap planes
+        colorData[0x1b] = 0x00;
+        colorData[0x1c] = 0x1;
+        colorData[0x1d] = 0x00;
+        colorData[0x1e] = 0x00; // Compression
+        colorData[0x1f] = 0x00;
+        colorData[0x20] = 0x00;
+        colorData[0x21] = 0x00;
+        colorData[0x22] = (byte) 0xe0;
+        colorData[0x23] = (byte) 0x0b;
+        colorData[0x24] = 0x00;
+        colorData[0x25] = 0x00;
+        colorData[0x26] = 0x00;
+        colorData[0x27] = 0x00;
+        colorData[0x28] = 0x00;
+        colorData[0x29] = 0x00;
+        colorData[0x2a] = 0x00;
+        colorData[0x2b] = 0x00;
+        colorData[0x2c] = 0x00;
+        colorData[0x2d] = 0x00;
+        colorData[0x2e] = 0x00;
+        colorData[0x2f] = 0x00;
+        colorData[0x30] = 0x00;
+        colorData[0x31] = 0x00;
+        colorData[0x32] = 0x00;
+        colorData[0x33] = 0x00;
+        colorData[0x34] = 0x00;
+        colorData[0x35] = 0x00;
+        colorData[0x36] = 0x00;
+        colorData[0x37] = 0x00;
+        colorData[0x38] = 0x00;
+        colorData[0x39] = 0x00;
+        colorData[0x3a] = (byte) 0xFF;
+        colorData[0x3b] = (byte) 0xFF;
+        colorData[0x3c] = (byte) 0xFF;
+        colorData[0x3d] = 0x00;
+
         try {
-            //写文件
+            // Write the file
             FileOutputStream fileos = new FileOutputStream(strDestBmpFile);
-            fileos.write(colorData1);
+            fileos.write(colorData);
             fileos.close();
             File file = new File(strSrcBmpFile);
             file.delete();
-
         } catch (Exception e) {
             return false;
         }
 
         return true;
+    }
 
+    private static void getFourColorDataBmp24(byte[] srcBmpData, int width, int height, byte[] destData, int destWidth, boolean enableGray) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int srcIndex = (y * width + x) * 3;
+                int b = srcBmpData[srcIndex] & 0xFF;
+                int g = srcBmpData[srcIndex + 1] & 0xFF;
+                int r = srcBmpData[srcIndex + 2] & 0xFF;
+
+                int colorIndex;
+                if (r > 200 && g < 100 && b < 100) {
+                    colorIndex = 2; // Red
+                } else if (r > 200 && g > 200 && b < 100) {
+                    colorIndex = 1; // Yellow
+                } else if (r < 100 && g < 100 && b < 100) {
+                    colorIndex = 0; // Black
+                } else {
+                    colorIndex = 3; // White
+                }
+
+                int destIndex = (y * destWidth + (x / 8));
+                int bitOffset = 7 - (x % 8);
+                destData[0x3E + destIndex] |= (colorIndex << bitOffset);
+            }
+        }
+    }
+
+    /**
+     * 把24位真彩色的图片转换成  黑白单色的图
+     *
+     * @return
+     */
+    public static boolean Convert24bmpToBlackWithebmp(String strSrcBmpFile, String strDestBmpFile, boolean EnableGray) {
+      return Convert24bmpToFourColorBmp(strSrcBmpFile,strDestBmpFile,EnableGray);
     }
 
 
