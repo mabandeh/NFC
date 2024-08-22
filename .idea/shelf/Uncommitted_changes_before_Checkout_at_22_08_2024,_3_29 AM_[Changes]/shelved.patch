@@ -1,0 +1,109 @@
+Index: app/src/main/java/com/fmsh/einkesl/activity/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fmsh.einkesl.activity;\n\nimport android.Manifest;\nimport android.app.Activity;\nimport android.content.BroadcastReceiver;\nimport android.content.Context;\nimport android.content.Intent;\nimport android.content.pm.PackageManager;\nimport android.graphics.Bitmap;\nimport android.graphics.BitmapFactory;\nimport android.net.Uri;\nimport android.nfc.NfcAdapter;\nimport android.nfc.NfcManager;\nimport android.os.Bundle;\nimport android.os.Handler;\nimport android.os.Message;\nimport android.provider.Settings;\nimport android.util.Log;\nimport android.view.View;\nimport android.widget.Toast;\n\nimport androidx.annotation.NonNull;\nimport androidx.core.app.ActivityCompat;\nimport androidx.recyclerview.widget.GridLayoutManager;\nimport androidx.recyclerview.widget.RecyclerView;\n\nimport com.fmsh.base.adapter.BaseRecyclerAdapter;\nimport com.fmsh.base.adapter.GridDividerItemDecoration;\nimport com.fmsh.base.ui.BaseNFCActivity;\nimport com.fmsh.base.utils.BroadcastManager;\nimport com.fmsh.base.utils.FMUtil;\nimport com.fmsh.base.utils.HintDialog;\nimport com.fmsh.base.utils.LogUtil;\nimport com.fmsh.base.utils.NfcConstant;\nimport com.fmsh.base.utils.SpUtils;\nimport com.fmsh.base.utils.UIUtils;\nimport com.fmsh.einkesl.App;\nimport com.fmsh.einkesl.R;\nimport com.fmsh.einkesl.adapter.MainAdapter;\nimport com.fmsh.einkesl.bean.DeviceInfo;\nimport com.fmsh.einkesl.tools.MyThread;\nimport com.fmsh.einkesl.tools.image.BmpUtils;\nimport com.fmsh.einkesl.tools.image.ImageUtils;\nimport com.fmsh.einkesl.utils.IUtils;\nimport com.google.gson.Gson;\nimport com.luck.picture.lib.PictureSelector;\nimport com.luck.picture.lib.config.PictureConfig;\nimport com.luck.picture.lib.entity.LocalMedia;\nimport com.qmuiteam.qmui.widget.QMUILoadingView;\nimport com.qmuiteam.qmui.widget.QMUITopBarLayout;\nimport com.qmuiteam.qmui.widget.dialog.QMUIDialog;\nimport com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;\nimport com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;\nimport com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;\nimport com.yalantis.ucrop.UCrop;\n\nimport java.io.FileNotFoundException;\nimport java.lang.ref.WeakReference;\nimport java.util.List;\n\nimport butterknife.BindView;\n\npublic class MainActivity extends BaseNFCActivity {\n\n    public ReceiveHandler receiveHandler;\n    @BindView(R.id.topbar)\n    QMUITopBarLayout topbar;\n    @BindView(R.id.recyclerView)\n    RecyclerView recyclerView;\n    private QMUIGroupListView mGroupListView;\n    private MainAdapter mMainAdapter;\n\n    private QMUICommonListItemView mItemView;\n    private QMUICommonListItemView mItemView1;\n    private QMUICommonListItemView mItemView2;\n    private QMUICommonListItemView mItemView3;\n    private QMUICommonListItemView mItemView4;\n    private QMUICommonListItemView mItemView5;\n    private DeviceInfo mDeviceInfo;\n    private QMUICommonListItemView mItemView6;\n\n\n    @Override\n    protected int getLayoutId() {\n        return R.layout.activity_main;\n    }\n\n    @Override\n    protected void initView() {\n        receiveHandler = new ReceiveHandler(this);\n        setTitle(UIUtils.getString(mContext, R.string.app_name) + \"  \" + getCurrentVersionName());\n        if (!MyThread.getInstance().isAlive()) {\n            MyThread.getInstance().start();\n        }\n        mGroupListView = new QMUIGroupListView(mContext);\n        mMainAdapter = new MainAdapter(mContext);\n        mMainAdapter.setHeaderView(mGroupListView);\n        int spanCount = 3;\n        recyclerView.setLayoutManager(new GridLayoutManager(mContext, spanCount));\n        recyclerView.addItemDecoration(new GridDividerItemDecoration(mContext, spanCount, 0));\n        recyclerView.setAdapter(mMainAdapter);\n\n        mItemView = createItem(\"UID\");\n        mItemView1 = createItem(UIUtils.getString(mContext, R.string.string_rp_id));\n        mItemView2 = createItem(UIUtils.getString(mContext, R.string.text_support_color));\n        mItemView4 = createItem(UIUtils.getString(mContext, R.string.text_manufacturer));\n        mItemView5 = createItem(UIUtils.getString(mContext, R.string.text_color_type));\n        mItemView6 = createItem(UIUtils.getString(R.string.pin_update));\n        mItemView6.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);\n        mItemView6.setVisibility(View.GONE);\n        QMUIGroupListView.newSection(mContext)\n                .setTitle(UIUtils.getString(mContext, R.string.text_device_info))\n                .addItemView(mItemView, null)\n                .addItemView(mItemView1, null)\n                .addItemView(mItemView2, null)\n                .addItemView(mItemView4, null)\n                .addItemView(mItemView5, null)\n                .addItemView(mItemView6, new View.OnClickListener() {\n                    @Override\n                    public void onClick(View v) {\n                        startActivity(null,PinActivity.class);\n                    }\n                })\n                .addTo(this.mGroupListView);\n\n        mMainAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {\n            @Override\n            public void itemClickListener(int position) {\n                if (position != 0 && mDeviceInfo == null) {\n                    HintDialog.messageDialog(UIUtils.getString(mContext, R.string.text_bind_device));\n                    return;\n                }\n                switch (position) {\n                    case 0:\n                        showNfcDialog();\n                        break;\n                    case 1:\n                        IUtils.selectPicture(MainActivity.this);\n                        break;\n                    case 4:\n                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {\n                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);\n                        } else {\n                            IUtils.openCamera(MainActivity.this);\n                        }\n                        break;\n                    case 2:\n                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {\n                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);\n                        } else {\n\n                            startActivity(null, TextGenerateBmpActivity.class);\n                        }\n                        break;\n                    case 3:\n                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {\n                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);\n                        } else {\n                            startActivity(null, CustomImageActivity.class);\n                        }\n                        break;\n                    case 5:\n                        startActivity(null, CommandActivity.class);\n                        break;\n                    default:\n                        break;\n                }\n\n            }\n        });\n    }\n\n\n    @Override\n    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {\n        super.onRequestPermissionsResult(requestCode, permissions, grantResults);\n\n        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {\n            switch (requestCode) {\n                case 100:\n                    IUtils.openCamera(MainActivity.this);\n                    break;\n                case 101:\n                    startActivity(null, TextGenerateBmpActivity.class);\n                    break;\n                case 102:\n                    startActivity(null, CustomImageActivity.class);\n                    break;\n                default:\n                    break;\n\n            }\n\n        }\n    }\n\n    @Override\n    protected void initData() {\n        String info = SpUtils.getStringValue(mContext, \"info\", \"\");\n        if (!info.isEmpty()) {\n            Gson gson = new Gson();\n            DeviceInfo deviceInfo = gson.fromJson(info, DeviceInfo.class);\n            mDeviceInfo = deviceInfo;\n            App.setDeviceInfo(mDeviceInfo);\n            loadView();\n        }\n\n\n    }\n\n\n    @Override\n    protected void onNewIntent(Intent intent) {\n        super.onNewIntent(intent);\n        if (nfcDialogIsShowing()) {\n            dismissNfcDialog();\n            Bundle bundle = new Bundle();\n            bundle.putParcelable(NfcConstant.KEY_TAG, mTag);\n            bundle.putInt(\"position\", 0);\n            App.setHandler(receiveHandler);\n            UIUtils.sendMessage(bundle, 0, MyThread.getInstance().getMyHandler());\n            mItemView.setDetailText(FMUtil.byteToHex(mTag.getId()));\n        }\n\n    }\n\n    @Override\n    public void onActivityResult(int requestCode, int resultCode, Intent data) {\n        super.onActivityResult(requestCode, resultCode, data);\n        if (resultCode == Activity.RESULT_OK) {\n            switch (requestCode) {\n                case PictureConfig.CHOOSE_REQUEST:\n                    ImageUtils.loadImage(data, mDeviceInfo, MainActivity.this);\n                    break;\n                case PictureConfig.REQUEST_CAMERA:\n                    // 结果回调\n                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);\n                    break;\n                case UCrop.REQUEST_CROP:\n                    if (resultCode == RESULT_OK) {\n                        Uri resultUri = UCrop.getOutput(data);\n                        try {\n                            Bundle bundle = new Bundle();\n                            String path = resultUri.getPath();\n                            LogUtil.d(path);\n                            Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));\n                            Intent intent = new Intent(MainActivity.this, RefreshScreenActivity.class);\n                            bundle.putString(\"CropImageActivity\", path);\n                            intent.putExtras(bundle);\n                            startActivity(intent);\n                        } catch (FileNotFoundException e) {\n                            e.printStackTrace();\n                        }\n                    }\n                    break;\n                default:\n                    break;\n            }\n        }\n\n    }\n\n\n    private QMUICommonListItemView createItem(String text) {\n        QMUICommonListItemView itemView = mGroupListView.createItemView(text);\n        QMUILoadingView qmuiLoadingView = new QMUILoadingView(mContext);\n        itemView.addAccessoryCustomView(qmuiLoadingView);\n        return itemView;\n    }\n\n    private void loadDeviceInfo(String info) {\n        if (info == null) {\n            IUtils.showDialogErrorInfo(mContext);\n            return;\n        }\n        mDeviceInfo = IUtils.loadDeviceInfo(mContext, info);\n\n        Gson gson = new Gson();\n        String json = gson.toJson(mDeviceInfo);\n        SpUtils.putStringValue(mContext, \"info\", json);\n        App.setDeviceInfo(mDeviceInfo);\n        loadView();\n    }\n\n    private void loadView() {\n        mItemView.setDetailText(mDeviceInfo.getUID());\n        mItemView1.setDetailText(mDeviceInfo.getScreen() + mDeviceInfo.getScanType());\n        if (IUtils.isCN(mContext)) {\n            mItemView2.setDetailText(mDeviceInfo.getColor());\n        } else {\n            mItemView2.setDetailText(mDeviceInfo.getEN_Color());\n        }\n        mItemView4.setDetailText(mDeviceInfo.getManufacturer());\n        mItemView5.setDetailText(mDeviceInfo.getColorType());\n        if(mDeviceInfo.getCosVersion() != 2){\n            if(mDeviceInfo.getPin() ){\n                mItemView6.setVisibility(View.VISIBLE);\n            }else {\n                mItemView6.setVisibility(View.GONE);\n            }\n        }else if (mDeviceInfo.getCosVersion() == 2){\n            mItemView6.setVisibility(View.GONE);\n        }\n\n    }\n\n\n    public static class ReceiveHandler extends Handler {\n        WeakReference<MainActivity> reference;\n\n        public ReceiveHandler(MainActivity activity) {\n            reference = new WeakReference<>(activity);\n        }\n\n        @Override\n        public void handleMessage(Message msg) {\n            super.handleMessage(msg);\n            MainActivity activity = (MainActivity) reference.get();\n            if (null != activity) {\n                activity.dismissNfcDialog();\n                switch (msg.what) {\n                    case 0:\n                        String deviceInfo = (String) msg.obj;\n                        LogUtil.d(deviceInfo);\n                        activity.loadDeviceInfo(deviceInfo);\n                        break;\n                    default:\n                        HintDialog.faileDialog(activity.mContext, UIUtils.getString(activity.mContext, R.string.text_error));\n                        break;\n                }\n            }\n        }\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/fmsh/einkesl/activity/MainActivity.java b/app/src/main/java/com/fmsh/einkesl/activity/MainActivity.java
+--- a/app/src/main/java/com/fmsh/einkesl/activity/MainActivity.java	(revision 6a88c935f9b79ef628a0c0fd30327e02eb3d3b2e)
++++ b/app/src/main/java/com/fmsh/einkesl/activity/MainActivity.java	(date 1724322557645)
+@@ -11,6 +11,8 @@
+ import android.net.Uri;
+ import android.nfc.NfcAdapter;
+ import android.nfc.NfcManager;
++import android.nfc.Tag;
++import android.nfc.tech.IsoDep;
+ import android.os.Bundle;
+ import android.os.Handler;
+ import android.os.Message;
+@@ -27,6 +29,7 @@
+ import com.fmsh.base.adapter.BaseRecyclerAdapter;
+ import com.fmsh.base.adapter.GridDividerItemDecoration;
+ import com.fmsh.base.ui.BaseNFCActivity;
++import com.fmsh.base.utils.ActivityUtils;
+ import com.fmsh.base.utils.BroadcastManager;
+ import com.fmsh.base.utils.FMUtil;
+ import com.fmsh.base.utils.HintDialog;
+@@ -55,6 +58,7 @@
+ import com.yalantis.ucrop.UCrop;
+ 
+ import java.io.FileNotFoundException;
++import java.io.IOException;
+ import java.lang.ref.WeakReference;
+ import java.util.List;
+ 
+@@ -244,10 +248,11 @@
+                             String path = resultUri.getPath();
+                             LogUtil.d(path);
+                             Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
+-                            Intent intent = new Intent(MainActivity.this, RefreshScreenActivity.class);
+-                            bundle.putString("CropImageActivity", path);
+-                            intent.putExtras(bundle);
+-                            startActivity(intent);
++
++                          //  Intent intent = new Intent(MainActivity.this, RefreshScreenActivity.class);
++                            //bundle.putString("CropImageActivity", path);
++                            ////intent.putExtras(bundle);
++                           // startActivity(intent);
+                         } catch (FileNotFoundException e) {
+                             e.printStackTrace();
+                         }
+@@ -258,6 +263,57 @@
+             }
+         }
+ 
++    }
++    public static void startIsoDep(Bundle bundle) {
++        Tag tag = bundle.getParcelable(NfcConstant.KEY_TAG);
++        if (tag == null) {
++            return;
++        }
++        IsoDep isoDep = IsoDep.get(tag);
++        if (isoDep != null) {
++            try {
++                isoDep.setTimeout(50000);
++                if (!isoDep.isConnected()) {
++                    isoDep.connect();
++                }
++                byte[] transceive = isoDep.transceive(FMUtil.hexToByte("00A4040007D2760000850101"));
++                LogUtil.d(FMUtil.byteToHex(transceive));
++                switch (bundle.getInt("position")) {
++                    case 0:
++                        getDeviceInfo(isoDep);
++                        break;
++                    case 1:
++                        if(App.getDeviceInfo().getPin()){
++                            if(verifyPinCode(isoDep,bundle.getString("pin"))){
++                                mBmpPath = bundle.getString("path");
++                                handlerImage(isoDep,bundle.getBoolean("isLvl"));
++                            }
++                        }else {
++                            mBmpPath = bundle.getString("path");
++                            handlerImage(isoDep,bundle.getBoolean("isLvl"));
++                        }
++                        break;
++                    case 2:
++                        sendApdu(isoDep,bundle.getString("apdu"));
++                        break;
++                    case 3:
++                        updatePin(isoDep,bundle.getString("oldPin"),bundle.getString("pin"));
++                        break;
++                    default:
++                        break;
++                }
++            } catch (Exception e) {
++                e.printStackTrace();
++                UIUtils.sendMessage(ActivityUtils.instance.getCurrentActivity().getResources().getString(R.string.hint_error), -1, App.getHandler());
++            } finally {
++                try {
++                    isoDep.close();
++                } catch (IOException e) {
++                    e.printStackTrace();
++                }
++
++            }
++        }
+     }
+ 
+ 
