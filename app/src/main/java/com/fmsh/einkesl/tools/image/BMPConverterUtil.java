@@ -46,9 +46,7 @@ public class BMPConverterUtil {
             palette = new RGBTriple[]{new RGBTriple(0, 0, 0), new RGBTriple(255, 255, 255), new RGBTriple(255, 0, 0)};
         } else if (deviceType == 2) {
             //黑白黄价签
-          //  palette = new RGBTriple[]{new RGBTriple(0, 0, 0), new RGBTriple(255, 255, 255), new RGBTriple(255, 255, 0)};
-            palette = new RGBTriple[]{new RGBTriple(0, 0, 0), new RGBTriple(255, 255, 255), new RGBTriple(255, 0, 0),new RGBTriple(255, 255, 0)};
-
+            palette = new RGBTriple[]{new RGBTriple(0, 0, 0), new RGBTriple(255, 255, 255), new RGBTriple(255, 255, 0)};
         }
         else if (deviceType == 3) {
             //黑白红黄价签

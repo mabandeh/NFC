@@ -121,7 +121,7 @@ public class MainActivity extends BaseNFCActivity {
                 .addItemView(mItemView6, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(null, PinActivity.class);
+                        startActivity(null,PinActivity.class);
                     }
                 })
                 .addTo(this.mGroupListView);
@@ -167,7 +167,7 @@ public class MainActivity extends BaseNFCActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // 先判断有没有权限
             if (Environment.isExternalStorageManager()) {
-                switch (type) {
+                switch (type){
                     case 1:
                         IUtils.selectPicture(MainActivity.this);
                         break;
@@ -187,10 +187,10 @@ public class MainActivity extends BaseNFCActivity {
                 intent.setData(Uri.parse("package:" + mContext.getPackageName()));
                 startActivityForResult(intent, 100);
             }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 先判断有没有权限
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                switch (type) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
+                switch (type){
                     case 1:
                         IUtils.selectPicture(MainActivity.this);
                         break;
@@ -206,7 +206,7 @@ public class MainActivity extends BaseNFCActivity {
                 }
             } else {
                 int REQUEST_CODE = 0;
-                switch (type) {
+                switch (type){
                     case 1:
                         REQUEST_CODE = 0;
                         break;
@@ -225,7 +225,7 @@ public class MainActivity extends BaseNFCActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
             }
         } else {
-            switch (type) {
+            switch (type){
                 case 1:
                     IUtils.selectPicture(MainActivity.this);
                     break;
@@ -241,7 +241,6 @@ public class MainActivity extends BaseNFCActivity {
             }
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -263,8 +262,8 @@ public class MainActivity extends BaseNFCActivity {
 
             }
 
-        } else {
-            HintDialog.messageDialog("请打开相应的权限");
+        }else {
+           HintDialog.messageDialog("请打开相应的权限");
         }
     }
 
@@ -335,6 +334,7 @@ public class MainActivity extends BaseNFCActivity {
     }
 
 
+
     private QMUICommonListItemView createItem(String text) {
         QMUICommonListItemView itemView = mGroupListView.createItemView(text);
         QMUILoadingView qmuiLoadingView = new QMUILoadingView(mContext);
@@ -349,27 +349,7 @@ public class MainActivity extends BaseNFCActivity {
         }
         mDeviceInfo = IUtils.loadDeviceInfo(mContext, info);
 
-        String newgson =
-                "{\"AppID\":\"201EA001\",\"EN_Color\":\"Black White Red\",\"UID\":\"70C7FC7E\",\"black\":0,\"blue\":0,\"color\":\"黑白红三色\",\"colorCount\":3,\"colorType\":\"Black(0)White(2)Red(1)\",\"cosVersion\":0,\"cyan\":0,\"deviceType\":1,\"green\":0,\"height\":240,\"isBattery\":false,\"isCompress\":true,\"isPin\":false,\"manufacturer\":\"OTHER(F0)\",\"orange\":0,\"pictureCapacity\":6,\"pinCode\":\"1122334455\",\"red\":1,\"refreshScan\":0,\"scanType\":\"(Vertical scan)\",\"screen\":\"416x240\",\"size\":2,\"userData\":20,\"violet\":0,\"white\":2,\"width\":416,\"yellow\":0}";
-
-
         Gson gson = new Gson();
-//        DeviceInfo nDI = gson.fromJson(newgson, DeviceInfo.class);
-//
-//        mDeviceInfo.setEN_Color(nDI.getEN_Color());
-//        mDeviceInfo.setColor(nDI.getColor());
-//        mDeviceInfo.setColorCount(nDI.getColorCount());
-//        mDeviceInfo.setColorType(nDI.getColorType());
-//        mDeviceInfo.setDeviceType(nDI.getDeviceType());
-//        mDeviceInfo.setHeight(nDI.getHeight());
-//        mDeviceInfo.setWidth(nDI.getWidth());
-//        mDeviceInfo.setPictureCapacity(nDI.getPictureCapacity());
-//        mDeviceInfo.setRed(nDI.getRed());
-//        mDeviceInfo.setScreen(nDI.getScreen());
-//        mDeviceInfo.setSize(nDI.getWhite());
-//        mDeviceInfo.setWhite(nDI.getSize());
-
-
         String json = gson.toJson(mDeviceInfo);
         SpUtils.putStringValue(mContext, "info", json);
         App.setDeviceInfo(mDeviceInfo);
@@ -386,14 +366,14 @@ public class MainActivity extends BaseNFCActivity {
         }
         mItemView4.setDetailText(mDeviceInfo.getManufacturer());
         mItemView5.setDetailText(mDeviceInfo.getColorType());
-        if (mDeviceInfo.getCosVersion() != 2) {
+        if(mDeviceInfo.getCosVersion() != 2){
             //重新绑定,输入PIN
-            if (mDeviceInfo.getPin()) {
+            if(mDeviceInfo.getPin() ){
                 mItemView6.setVisibility(View.VISIBLE);
-            } else {
+            }else {
                 mItemView6.setVisibility(View.GONE);
             }
-        } else if (mDeviceInfo.getCosVersion() == 2) {
+        }else if (mDeviceInfo.getCosVersion() == 2){
             mItemView6.setVisibility(View.GONE);
         }
 
