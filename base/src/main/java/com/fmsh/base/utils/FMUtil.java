@@ -682,6 +682,19 @@ public class FMUtil {
         return hs.toUpperCase();
     }
 
+    public static String byteToHex(byte b) {
+        String hs = "";
+        String stmp = "";
+            stmp = Integer.toHexString(b & 0xff);
+            if (stmp.length() == 1) {
+                hs = hs + "0" + stmp;
+            } else {
+                hs = hs + stmp;
+            }
+
+        return hs.toUpperCase();
+    }
+
     /**
      * 截取数组
      *

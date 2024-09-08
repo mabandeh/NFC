@@ -14,7 +14,7 @@ public class LogUtil {
      * 是否开启debug
      */
     private static boolean isDebug= BuildConfig.DEBUG;
-    public static String TAG = "ESL";
+    public static String TAG = "ESLESLESL";
 
     public static void v(Object msg){
         if(isDebug){
